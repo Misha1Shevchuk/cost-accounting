@@ -1,0 +1,28 @@
+{
+  "name": "costaccounting",
+  "version": "1.0.0",
+  "description": "fb messenger chat bot for accounting your cost",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Misha1Shevchuk/cost-accounting.git"
+  },
+  "keywords": [
+    "node.js",
+    "fb",
+    "chatbot",
+    "messenger"
+  ],
+  "author": "Mykhailo Shevchuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Misha1Shevchuk/cost-accounting/issues"
+  },
+  "homepage": "https://github.com/Misha1Shevchuk/cost-accounting#readme",
+  "dependencies": {
+    "mongoose": "^5.7.1"
+  }
+}
