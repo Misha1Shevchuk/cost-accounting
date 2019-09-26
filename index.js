@@ -13,7 +13,7 @@ const server = app.listen(process.env.PORT || 1337, () =>
   console.log(`webhook is listening port ${server.address().port}`)
 );
 
-app.use("/api/m", route); // Route
+app.use("/api/messages", route); // Route
 
 // Connect DB
 mongoose.connect(

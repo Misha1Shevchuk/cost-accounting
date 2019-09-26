@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const ctr = require("./controller");
+const controller = require("./controller");
 
 // Accepts POST requests
-router.post("/", ctr.newMessage);
+router.post("/", controller.newMessage);
 // Accepts GET requests
-router.get("/", ctr.get);
+router.get("/", controller.get);
 
 module.exports = router;

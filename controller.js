@@ -1,4 +1,6 @@
 const request = require("request");
+const checkMessage = require("./services/checkMessage");
+const getUserData = require("./services/userData");
 require("dotenv").config();
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -9,21 +11,23 @@ module.exports.newMessage = (req, res) => {
 
   // Check the webhook event is from a Page subscription
   if (body.object === "page") {
-    body.entry.forEach(function(entry) {
+    body.entry.forEach(async entry => {
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
       console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
+      let userData = await getUserData(sender_psid);
+      console.log(userData);
       console.log("Sender ID: " + sender_psid);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
-        ctr.handleMessage(sender_psid, webhook_event.message);
+        handleMessage(sender_psid, webhook_event.message, userData);
       } else if (webhook_event.postback) {
-        ctr.handlePostback(sender_psid, webhook_event.postback);
+        handlePostback(sender_psid, webhook_event.postback);
       }
     });
     // Return a '200 OK' response to all events
@@ -57,7 +61,7 @@ module.exports.get = (req, res) => {
   }
 };
 
-module.exports.handleMessage = (sender_psid, received_message) => {
+const handleMessage = (sender_psid, received_message, userData) => {
   let response;
 
   // Checks if the message contains text
@@ -65,7 +69,7 @@ module.exports.handleMessage = (sender_psid, received_message) => {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
     response = {
-      text: `You sent the message: "${received_message.text}". Now send me an attachment!`
+      text: checkMessage(received_message, userData)
     };
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
@@ -98,16 +102,31 @@ module.exports.handleMessage = (sender_psid, received_message) => {
       }
     };
   }
-
   // Send the response message
   callSendAPI(sender_psid, response);
 };
 
-module.exports.handlePostback = (sender_psid, received_postback) => {
+const handlePostback = (sender_psid, received_postback) => {
   console.log("ok");
   let response;
   // Get the payload for the postback
   let payload = received_postback.payload;
+
+  MessengerExtensions.askPermission(
+    function(permission_response) {
+      // Person grants or rejects the asked permission.
+      let permissions = permission_response.permissions; // list of all permissions granted
+      let isGranted = permission_response.isGranted;
+
+      if (isGranted) {
+        console.log(object);
+      }
+    },
+    function(errorCode, errorMessage) {
+      // Error occurred
+    },
+    "user_profile"
+  );
 
   // Set the response based on the postback payload
   if (payload === "yes") {
@@ -119,7 +138,7 @@ module.exports.handlePostback = (sender_psid, received_postback) => {
   callSendAPI(sender_psid, response);
 };
 
-function callSendAPI(sender_psid, response) {
+const callSendAPI = (sender_psid, response) => {
   // Construct the message body
   let request_body = {
     recipient: {
@@ -144,4 +163,4 @@ function callSendAPI(sender_psid, response) {
       }
     }
   );
-}
+};
