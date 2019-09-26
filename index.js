@@ -1,6 +1,3 @@
-"use strict";
-
-// Imports dependencies and set up http server
 const mongoose = require("mongoose");
 require("dotenv").config();
 const express = require("express");
