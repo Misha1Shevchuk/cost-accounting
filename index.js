@@ -1,23 +1,23 @@
 "use strict";
 
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request");
-const dotenv = require("dotenv");
+require("dotenv").config();
 const express = require("express");
 const body_parser = require("body-parser");
 const app = express().use(body_parser.json()); // creates express http server
-dotenv.config();
 
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Sets server port and logs message on success
 const server = app.listen(process.env.PORT || 1337, () =>
   console.log(`webhook is listening - port ${server.address().port}`)
 );
 
-// Accepts POST requests at /webhook endpoint
-app.post("/webhook", (req, res) => {
+// Accepts POST requests at /api/messages endpoint
+app.post("/api/messages", (req, res) => {
   // Parse the request body from the POST
   let body = req.body;
+  console.log(body);
 
   // Check the webhook event is from a Page subscription
   if (body.object === "page") {
@@ -46,10 +46,10 @@ app.post("/webhook", (req, res) => {
   }
 });
 
-// Accepts GET requests at the /webhook endpoint
-app.get("/webhook", (req, res) => {
+// Accepts GET requests at the /api/messages endpoint
+app.get("/api/messages", (req, res) => {
   /** UPDATE YOUR VERIFY TOKEN **/
-  const VERIFY_TOKEN = "sdjfldsjflasjflsjdf";
+  const VERIFY_TOKEN = "vertok";
 
   // Parse params from the webhook verification request
   let mode = req.query["hub.mode"];
