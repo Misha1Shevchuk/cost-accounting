@@ -1,6 +1,7 @@
-const handleMessage = require("../helpers/handleMessage");
-const handlePostback = require("../helpers/handlePostback");
-const handleQuickReply = require("../helpers/handleQuickReply");
+const handleMessage = require("../handlers/handleMessage");
+const handlePostback = require("../handlers/handlePostback");
+const handleQuickReply = require("../handlers/handleQuickReply");
+const { addSenderAction } = require("../helpers/requests");
 require("dotenv").config();
 
 module.exports.newMessage = (req, res) => {
@@ -15,15 +16,16 @@ module.exports.newMessage = (req, res) => {
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
+      addSenderAction(sender_psid);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
-      if (webhook_event.message.quick_reply) {
-        handleQuickReply(sender_psid, webhook_event.message.quick_reply);
-      } else if (webhook_event.postback) {
+      if (webhook_event.postback) {
         handlePostback(sender_psid, webhook_event.postback);
+      } else if (webhook_event.message.quick_reply) {
+        handleQuickReply(sender_psid, webhook_event.message.quick_reply);
       } else if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message);
+        handleMessage(sender_psid, webhook_event.message.text);
       }
     });
     // Return a '200 OK' response to all events

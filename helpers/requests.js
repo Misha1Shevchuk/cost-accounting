@@ -13,6 +13,7 @@ const getUserData = async sender_psid => {
     .then(request => request.data);
 };
 
+// Add button "get started"
 const addGetStartedButton = () => {
   const data = {
     get_started: { payload: "<GET_STARTED_PAYLOAD>" },
@@ -37,4 +38,20 @@ const addGetStartedButton = () => {
     .catch(err => console.log(err));
 };
 
-module.exports = { getUserData, addGetStartedButton };
+// sender action
+const addSenderAction = sender_psid => {
+  const data = {
+    recipient: {
+      id: sender_psid
+    },
+    sender_action: "typing_on"
+  };
+  axios
+    .post(
+      `https://graph.facebook.com/v2.6/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+      data
+    )
+    .catch(err => console.log(err));
+};
+
+module.exports = { getUserData, addGetStartedButton, addSenderAction };

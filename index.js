@@ -12,6 +12,7 @@ const server = app.listen(process.env.PORT || 1337, () =>
 );
 
 addGetStartedButton();
+
 app.use("/api/messages", route); // Route
 
 // Connect DB
