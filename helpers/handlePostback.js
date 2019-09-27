@@ -1,18 +1,21 @@
+const { getUserData } = require("./requests");
+const database = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
+const checkMessage = require("../messages/checkMessage");
 
-const handlePostback = (sender_psid, received_postback) => {
-  let response;
+const handlePostback = async (sender_psid, received_postback) => {
   // Get the payload for the postback
   let payload = received_postback.payload;
-
+  console.log(payload);
   // Set the response based on the postback payload
-  if (payload === "yes") {
-    response = { text: "Thanks!" };
-  } else if (payload === "no") {
-    response = { text: "Oops, try sending another image." };
+  if (payload === "<GET_STARTED_PAYLOAD>") {
+    let userData = await getUserData(sender_psid);
+    let users = await database.checkUser(sender_psid);
+    if (!users) {
+      database.addNewUser(sender_psid, userData);
+    }
+    callSendAPI(sender_psid, checkMessage({ text: "hello" }));
   }
-  // Send the message to acknowledge the postback
-  callSendAPI(sender_psid, response);
 };
 
 module.exports = handlePostback;

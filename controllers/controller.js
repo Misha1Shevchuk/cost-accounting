@@ -1,44 +1,39 @@
-const { getUserData } = require("../helpers/userData");
 const handleMessage = require("../helpers/handleMessage");
 const handlePostback = require("../helpers/handlePostback");
+const handleQuickReply = require("../helpers/handleQuickReply");
 require("dotenv").config();
 
 module.exports.newMessage = (req, res) => {
   // Parse the request body from the POST
   let body = req.body;
-  console.log(body);
 
   // Check the webhook event is from a Page subscription
   if (body.object === "page") {
     body.entry.forEach(async entry => {
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      let userData = await getUserData(sender_psid);
-      console.log(userData);
-      console.log("Sender ID: " + sender_psid);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
-      if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message, userData);
+      if (webhook_event.message.quick_reply) {
+        handleQuickReply(sender_psid, webhook_event.message.quick_reply);
       } else if (webhook_event.postback) {
         handlePostback(sender_psid, webhook_event.postback);
+      } else if (webhook_event.message) {
+        handleMessage(sender_psid, webhook_event.message);
       }
     });
     // Return a '200 OK' response to all events
     res.status(200).send("EVENT_RECEIVED");
   } else {
-    // Return a '404 Not Found' if event is not from a page subscription
     res.sendStatus(200);
   }
 };
 
 module.exports.get = (req, res) => {
-  /** UPDATE YOUR VERIFY TOKEN **/
   const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
   // Parse params from the webhook verification request
