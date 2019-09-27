@@ -1,5 +1,5 @@
-// const mongoose = require("mongoose");
 const User = require("../models/user");
+const Cost = require("../models/costs");
 
 const addNewUser = (sender_psid, userName) => {
   const user = new User({
@@ -13,4 +13,19 @@ const addNewUser = (sender_psid, userName) => {
     .catch(err => console.log(err));
 };
 
-module.exports = { addNewUser };
+const addNewCost = (sender_psid, details) => {
+  const cost = new Cost({
+    amount: details.amount,
+    description: details.description,
+    date: details.date,
+    category: details.category,
+    userId: sender_psid
+  });
+
+  cost
+    .save()
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+};
+
+module.exports = { addNewUser, addNewCost };

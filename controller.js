@@ -1,6 +1,6 @@
 const request = require("request");
-const { checkMessage, getUserData } = require("./services/messages");
-const { addNewUser } = require("./services/database");
+const { getUserData } = require("./helpers/userData");
+const { checkMessage } = require("./messages");
 require("dotenv").config();
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -22,9 +22,6 @@ module.exports.newMessage = (req, res) => {
       console.log(userData);
       console.log("Sender ID: " + sender_psid);
 
-      /* Add user to db */
-      // addNewUser(sender_psid, userData);
-
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
@@ -37,7 +34,7 @@ module.exports.newMessage = (req, res) => {
     res.status(200).send("EVENT_RECEIVED");
   } else {
     // Return a '404 Not Found' if event is not from a page subscription
-    res.sendStatus(404);
+    res.sendStatus(200);
   }
 };
 
@@ -59,7 +56,7 @@ module.exports.get = (req, res) => {
       res.status(200).send(challenge);
     } else {
       // Responds with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);
+      res.sendStatus(200);
     }
   }
 };
@@ -71,38 +68,7 @@ const handleMessage = (sender_psid, received_message, userData) => {
   if (received_message.text) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    response = {
-      // text: checkMessage(received_message, userData)
-
-      text: "Categories:",
-      quick_replies: [
-        {
-          content_type: "text",
-          title: "transport",
-          payload: "<POSTBACK_PAYLOAD>"
-        },
-        {
-          content_type: "text",
-          title: "enterteinmant",
-          payload: "<POSTBACK_PAYLOAD>"
-        },
-        {
-          content_type: "text",
-          title: "clothes",
-          payload: "<POSTBACK_PAYLOAD>"
-        },
-        {
-          content_type: "text",
-          title: "food",
-          payload: "<POSTBACK_PAYLOAD>"
-        },
-        {
-          content_type: "text",
-          title: "other",
-          payload: "<POSTBACK_PAYLOAD>"
-        }
-      ]
-    };
+    response = checkMessage(received_message, userData);
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;
