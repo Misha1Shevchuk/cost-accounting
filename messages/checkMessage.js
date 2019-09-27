@@ -21,7 +21,7 @@ const checkMessage = (received_message, userData) => {
       break;
     case "Add costs":
       response = {
-        text: "Select category:",
+        text: "Select category",
         quick_replies: [
           {
             content_type: "text",
@@ -53,6 +53,7 @@ const checkMessage = (received_message, userData) => {
       break;
     case "transport":
       response = { text: `Enter your cost:` };
+
       break;
     case "enterteinmant":
       response = { text: `Enter your cost:` };
@@ -63,56 +64,10 @@ const checkMessage = (received_message, userData) => {
     case "food":
       response = { text: `Enter your cost:` };
       break;
-    case "100":
-      response = {
-        text: `Select action`,
-        quick_replies: [
-          {
-            content_type: "text",
-            title: "Add costs",
-            payload: "<POSTBACK_PAYLOAD>"
-          },
-          {
-            content_type: "text",
-            title: "Show statistic",
-            payload: "<POSTBACK_PAYLOAD>"
-          }
-        ]
-      };
-      break;
     default:
-      response = { text: `You sent the message: "${received_message.text}".` };
+      response = { text: `I don't understand "${received_message.text}" yet.` };
   }
   return response;
 };
 
-module.exports = { checkMessage };
-
-const user = {
-  _id: "user_id",
-  userName: "first_name last_name",
-  categories: [
-    {
-      food: [
-        {
-          date: "date",
-          amount: 123
-        },
-        {
-          date: "date",
-          amount: 213
-        }
-      ],
-      other: [
-        {
-          date: "date",
-          amount: 123
-        },
-        {
-          date: "date",
-          amount: 213
-        }
-      ]
-    }
-  ]
-};
+module.exports = checkMessage;

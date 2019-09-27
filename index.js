@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const body_parser = require("body-parser");
 const app = express().use(body_parser.json()); // creates express http server
-const route = require("./route");
+const route = require("./routes/route");
 
 // Sets server port and logs message on success
 const server = app.listen(process.env.PORT || 1337, () =>

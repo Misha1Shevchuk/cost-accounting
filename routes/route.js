@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const controller = require("./controller");
+const controller = require("../controllers/controller");
 
 // Accepts POST requests
 router.post("/", controller.newMessage);
