@@ -1,5 +1,5 @@
 const { getUserData } = require("../helpers/requests");
-const database = require("../services/user");
+const { getUser, addNewUser } = require("../services/user");
 const handleMessage = require("./handleMessage");
 
 const handlePostback = async (sender_psid, received_postback) => {
@@ -8,10 +8,7 @@ const handlePostback = async (sender_psid, received_postback) => {
   // Set the response based on the postback payload
   if (payload === "<GET_STARTED_PAYLOAD>") {
     let userData = await getUserData(sender_psid);
-    let users = await database.checkUser(sender_psid);
-    if (!users) {
-      database.addNewUser(sender_psid, userData);
-    }
+    if (!(await getUser(sender_psid))) addNewUser(sender_psid, userData);
     handleMessage(sender_psid, "hello");
   }
 };

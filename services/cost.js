@@ -1,11 +1,11 @@
 const Cost = require("../models/costs");
 
-const addNewCost = (sender_psid, details) => {
+const addNewCost = (sender_psid, cost_dedails) => {
   const cost = new Cost({
-    amount: details.amount,
-    description: details.description,
-    date: details.date,
-    category: details.category,
+    amount: cost_dedails.amount,
+    description: cost_dedails.description,
+    date: new Date().toJSON(),
+    category: cost_dedails.category,
     userId: sender_psid
   });
 

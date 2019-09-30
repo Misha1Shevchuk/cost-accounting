@@ -13,13 +13,13 @@ const addNewUser = (sender_psid, userData) => {
     .catch(err => console.log(err));
 };
 
-const checkUser = async sender_psid => {
+const getUser = async sender_psid => {
   try {
-    let users = await User.findById(sender_psid);
-    return users;
+    let user = await User.findById(sender_psid);
+    return user;
   } catch (err) {
     console.log(err);
   }
 };
 
-module.exports = { addNewUser, checkUser };
+module.exports = { addNewUser, getUser };
