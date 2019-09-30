@@ -56,7 +56,7 @@ const handlePostback = async (sender_psid, received_quickReply) => {
         break;
       default:
         response = {
-          text: `I don't understand quick reply ${payload} yet.`
+          text: `I don't understand quick reply "${payload}" yet.`
         };
         break;
     }

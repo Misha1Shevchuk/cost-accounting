@@ -16,7 +16,6 @@ const addState = sender_psid => {
 const getState = async sender_psid => {
   try {
     let state = await State.findById(sender_psid);
-    // console.log(state);
     return state;
   } catch (err) {
     console.log(err);
@@ -28,7 +27,6 @@ const updateState = async (sender_psid, param) => {
     let state = await State.findById(sender_psid);
     if (!state) throw new Error("Not found state!");
     await State.updateOne({ _id: sender_psid }, param);
-    // console.log(state);
   } catch (err) {
     throw err;
   }

@@ -7,12 +7,12 @@ const handleMessage = async (sender_psid, received_message) => {
   let response;
   let state = await getState(sender_psid);
   let user = await getUser(sender_psid);
-  console.log(user);
   // Checks if the message contains text
   if (received_message) {
     // Started message
     if (received_message.toLowerCase() === "hello") {
       callSendAPI(sender_psid, { text: `Hello, ${user.first_name}!` });
+      clearState(sender_psid);
       response = {
         attachment: {
           type: "template",
@@ -34,7 +34,6 @@ const handleMessage = async (sender_psid, received_message) => {
           }
         }
       };
-      clearState(sender_psid);
 
       // If user entered amount
     } else if (
@@ -58,26 +57,32 @@ const handleMessage = async (sender_psid, received_message) => {
     } else if (state.amount && !state.description) {
       await callSendAPI(sender_psid, { text: "Cost saved" });
       response = {
-        text: `What do you want to do?`,
-        quick_replies: [
-          {
-            content_type: "text",
-            title: "Add costs",
-            payload: "<ADD_COSTS>"
-          },
-          {
-            content_type: "text",
-            title: "Show statistic",
-            payload: "<SHOW_STATISTIC>"
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text: "What do you want to do?",
+            buttons: [
+              {
+                type: "postback",
+                title: "New cost",
+                payload: "<ADD_COSTS>"
+              },
+              {
+                type: "postback",
+                title: "Show statistic",
+                payload: "<SHOW_STATISTIC>"
+              }
+            ]
           }
-        ]
+        }
       };
       await updateState(sender_psid, { description: received_message });
       addNewCost(sender_psid, await getState(sender_psid));
       clearState(sender_psid);
     } else {
       response = {
-        text: `I don't understand "${received_message}" yet.`
+        text: `I don't understand message"${received_message}" yet.`
       };
     }
   }

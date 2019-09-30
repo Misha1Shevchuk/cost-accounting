@@ -9,7 +9,7 @@ const addNewUser = (sender_psid, userData) => {
 
   user
     .save()
-    .then(data => console.log(data))
+    .then(data => data)
     .catch(err => console.log(err));
 };
 

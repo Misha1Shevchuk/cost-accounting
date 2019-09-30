@@ -32,7 +32,6 @@ const addGetStartedButton = () => {
     .then(async res => {
       if (res.sender_psid) {
         let userData = await getUserData(res.sender_psid);
-        console.log("UserData => " + userData);
       }
     })
     .catch(err => console.log(err));

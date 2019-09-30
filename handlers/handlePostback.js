@@ -53,7 +53,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     default:
       response = {
-        text: `I don't understand quick reply "${payload}" yet.`
+        text: `I don't understand postback "${payload}" yet.`
       };
       break;
   }
