@@ -1,6 +1,4 @@
-const { getUserData } = require("../helpers/requests");
-const { updateState, addState, getState } = require("../services/state");
-const database = require("../services/user");
+const { updateState, getState } = require("../services/state");
 const callSendAPI = require("../controllers/callSendAPI");
 
 const handlePostback = async (sender_psid, received_quickReply) => {
@@ -9,44 +7,8 @@ const handlePostback = async (sender_psid, received_quickReply) => {
   let payload = received_quickReply.payload;
   try {
     switch (payload) {
-      case "<ADD_COSTS>":
-        response = {
-          text: "Select category",
-          quick_replies: [
-            {
-              content_type: "text",
-              title: "transport",
-              payload: "<TRANSPORT>"
-            },
-            {
-              content_type: "text",
-              title: "entertainment",
-              payload: "<ENTERTAINMENT>"
-            },
-            {
-              content_type: "text",
-              title: "clothes",
-              payload: "<CLOTHES>"
-            },
-            {
-              content_type: "text",
-              title: "food",
-              payload: "<FOOD>"
-            },
-            {
-              content_type: "text",
-              title: "other",
-              payload: "<OTHER>"
-            }
-          ]
-        };
-        if (!(await getState(sender_psid))) addState(sender_psid);
-        break;
-      case "<SHOW_STATISTIC>":
-        response = { text: `Not ready yet` };
-        break;
       case "<TRANSPORT>":
-        response = { text: `Enter your cost:` };
+        response = { text: `Enter amount:` };
         updateState(sender_psid, { category: "transport" });
         break;
       case "<ENTERTAINMENT>":
@@ -66,8 +28,31 @@ const handlePostback = async (sender_psid, received_quickReply) => {
         updateState(sender_psid, { category: "other" });
         break;
       case "<SKIP_DESCRIPTION>":
-        response = { text: `Enter your cost:` };
-        updateState(sender_psid, { description: "skipped" });
+        await callSendAPI(sender_psid, { text: "Cost saved" });
+        response = {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "button",
+              text: "What do you want to do?",
+              buttons: [
+                {
+                  type: "postback",
+                  title: "New cost",
+                  payload: "<ADD_COSTS>"
+                },
+                {
+                  type: "postback",
+                  title: "Show statistic",
+                  payload: "<SHOW_STATISTIC>"
+                }
+              ]
+            }
+          }
+        };
+        await updateState(sender_psid, { description: "skipped" });
+        addNewCost(sender_psid, await getState(sender_psid));
+        clearState(sender_psid);
         break;
       default:
         response = {
