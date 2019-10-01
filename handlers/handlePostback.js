@@ -21,7 +21,8 @@ const handlePostback = async (sender_psid, received_postback) => {
       if (!(await getState(sender_psid))) addState(sender_psid);
       break;
     case "<SHOW_STATISTIC>":
-      response = { text: `Not ready yet` };
+      // response = { text: "Not ready yet" };
+      response = res.showStatistic;
       break;
     default:
       response = {

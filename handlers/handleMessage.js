@@ -1,5 +1,5 @@
 const { updateState, getState, clearState } = require("../services/state");
-const { addNewCost } = require("../services/cost");
+const getCosts = require("../services/cost");
 const { getUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
 const res = require("../responses/responses");
@@ -12,7 +12,10 @@ const handleMessage = async (sender_psid, received_message) => {
   // Checks if the message contains text
   if (received_message) {
     // Started message
-    if (received_message.toLowerCase() === "hello") {
+    if (received_message.toLowerCase() === "test") {
+      clearState(sender_psid);
+      response = { text: ">" + received_message };
+    } else if (received_message.toLowerCase() === "hello") {
       clearState(sender_psid);
       callSendAPI(sender_psid, { text: `Hello, ${user.first_name}!` });
       response = res.startedMessage;

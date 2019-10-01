@@ -111,3 +111,24 @@ module.exports.saveCost = () => {
   };
   return response;
 };
+
+module.exports.showStatistic = {
+  text: "For which period?",
+  quick_replies: [
+    {
+      content_type: "text",
+      title: "Today",
+      payload: "<STATISTIC_DAY>"
+    },
+    {
+      content_type: "text",
+      title: "This week",
+      payload: "<STATISTIC_WEEK>"
+    },
+    {
+      content_type: "text",
+      title: "This month",
+      payload: "<STATISTIC_MONTH>"
+    }
+  ]
+};
