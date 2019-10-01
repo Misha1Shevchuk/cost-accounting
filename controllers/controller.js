@@ -28,7 +28,7 @@ module.exports.newMessage = (req, res) => {
       } else if (webhook_event.message.text) {
         handleMessage(sender_psid, webhook_event.message.text);
       } else {
-        callSendAPI(sender_psid, { text: "I dont understand you yet" });
+        callSendAPI(sender_psid, { text: "I dont understand it yet" });
         callSendAPI(sender_psid, {
           attachment: {
             type: "template",

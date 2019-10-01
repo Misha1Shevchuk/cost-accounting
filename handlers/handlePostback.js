@@ -3,6 +3,7 @@ const callSendAPI = require("../controllers/callSendAPI");
 const { addState, getState } = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
 const handleMessage = require("./handleMessage");
+const res = require("../responses/responses");
 
 const handlePostback = async (sender_psid, received_postback) => {
   // Get the payload for the postback
@@ -16,36 +17,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       handleMessage(sender_psid, "hello");
       break;
     case "<ADD_COSTS>":
-      response = {
-        text: "Select category",
-        quick_replies: [
-          {
-            content_type: "text",
-            title: "transport",
-            payload: "<TRANSPORT>"
-          },
-          {
-            content_type: "text",
-            title: "entertainment",
-            payload: "<ENTERTAINMENT>"
-          },
-          {
-            content_type: "text",
-            title: "clothes",
-            payload: "<CLOTHES>"
-          },
-          {
-            content_type: "text",
-            title: "food",
-            payload: "<FOOD>"
-          },
-          {
-            content_type: "text",
-            title: "other",
-            payload: "<OTHER>"
-          }
-        ]
-      };
+      response = res.selectCategory;
       if (!(await getState(sender_psid))) addState(sender_psid);
       break;
     case "<SHOW_STATISTIC>":

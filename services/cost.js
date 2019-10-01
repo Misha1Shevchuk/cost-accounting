@@ -11,7 +11,7 @@ const addNewCost = (sender_psid, cost_dedails) => {
 
   cost
     .save()
-    .then(data => console.log(data))
+    .then(data => data)
     .catch(err => console.log(err));
 };
 
