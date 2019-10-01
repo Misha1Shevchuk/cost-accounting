@@ -20,17 +20,6 @@ module.exports.startedMessage = {
   }
 };
 
-module.exports.enterDescription = {
-  text: "Enter description: ",
-  quick_replies: [
-    {
-      content_type: "text",
-      title: "skip",
-      payload: "<SKIP_DESCRIPTION>"
-    }
-  ]
-};
-
 module.exports.selectCategory = {
   text: "Select category",
   quick_replies: [
@@ -62,4 +51,63 @@ module.exports.selectCategory = {
   ]
 };
 
-module.exports.enterAmount = { text: `Enter amount:` };
+module.exports.enterAmount = {
+  text: `Enter amount:`,
+  quick_replies: [
+    {
+      content_type: "text",
+      title: "50",
+      payload: "<AMOUNT_50>"
+    },
+    {
+      content_type: "text",
+      title: "100",
+      payload: "<AMOUNT_100>"
+    },
+    {
+      content_type: "text",
+      title: "200",
+      payload: "<AMOUNT_200>"
+    },
+    {
+      content_type: "text",
+      title: "Change category",
+      payload: "<GO_BACK_TO_CATEGORIES>"
+    }
+  ]
+};
+
+module.exports.enterDescription = {
+  text: "Enter description: ",
+  quick_replies: [
+    {
+      content_type: "text",
+      title: "Skip",
+      payload: "<SKIP_DESCRIPTION>"
+    },
+    {
+      content_type: "text",
+      title: "Change amount",
+      payload: "<GO_BACK_TO_AMOUNT>"
+    }
+  ]
+};
+
+module.exports.saveCost = () => {
+  response = {
+    text: "Can i save your cost?",
+    quick_replies: [
+      {
+        content_type: "text",
+        title: "Save",
+        payload: "<SAVE_COST>"
+      },
+      {
+        content_type: "text",
+        title: "Change description",
+        payload: "<GO_BACK_TO_DESCRIPTION>"
+      }
+    ]
+  };
+  return response;
+};

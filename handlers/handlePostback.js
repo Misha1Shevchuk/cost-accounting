@@ -1,7 +1,7 @@
 const { getUserData } = require("../helpers/requests");
-const callSendAPI = require("../controllers/callSendAPI");
 const { addState, getState } = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
+const callSendAPI = require("../controllers/callSendAPI");
 const handleMessage = require("./handleMessage");
 const res = require("../responses/responses");
 

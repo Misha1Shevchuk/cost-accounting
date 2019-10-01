@@ -3,6 +3,7 @@ const handlePostback = require("../handlers/handlePostback");
 const handleQuickReply = require("../handlers/handleQuickReply");
 const callSendAPI = require("../controllers/callSendAPI");
 const { addSenderAction } = require("../helpers/requests");
+const responseMessage = require("../responses/responses");
 require("dotenv").config();
 
 module.exports.newMessage = (req, res) => {
@@ -28,28 +29,7 @@ module.exports.newMessage = (req, res) => {
       } else if (webhook_event.message.text) {
         handleMessage(sender_psid, webhook_event.message.text);
       } else {
-        callSendAPI(sender_psid, { text: "I dont understand it yet" });
-        callSendAPI(sender_psid, {
-          attachment: {
-            type: "template",
-            payload: {
-              template_type: "button",
-              text: "What do you want to do?",
-              buttons: [
-                {
-                  type: "postback",
-                  title: "New cost",
-                  payload: "<ADD_COSTS>"
-                },
-                {
-                  type: "postback",
-                  title: "Show statistic",
-                  payload: "<SHOW_STATISTIC>"
-                }
-              ]
-            }
-          }
-        });
+        callSendAPI(sender_psid, { text: "Sorry, I don't understand it yet" });
       }
     });
     // Return a '200 OK' response to all events

@@ -1,20 +1,20 @@
-const callSendAPI = require("../controllers/callSendAPI");
 const { updateState, getState, clearState } = require("../services/state");
 const { addNewCost } = require("../services/cost");
 const { getUser } = require("../services/user");
+const callSendAPI = require("../controllers/callSendAPI");
 const res = require("../responses/responses");
 
 const handleMessage = async (sender_psid, received_message) => {
   let response;
   let state = await getState(sender_psid);
-  console.log(state);
   let user = await getUser(sender_psid);
+
   // Checks if the message contains text
   if (received_message) {
     // Started message
     if (received_message.toLowerCase() === "hello") {
-      callSendAPI(sender_psid, { text: `Hello, ${user.first_name}!` });
       clearState(sender_psid);
+      callSendAPI(sender_psid, { text: `Hello, ${user.first_name}!` });
       response = res.startedMessage;
 
       // If user entered amount
@@ -23,16 +23,13 @@ const handleMessage = async (sender_psid, received_message) => {
         response = res.enterDescription;
         updateState(sender_psid, { amount: Number(received_message) });
       } else {
-        response = { text: `Enter your cost:` };
+        response = res.enterAmount;
       }
 
       // If user entered description
     } else if (state.amount && !state.description) {
-      await callSendAPI(sender_psid, { text: "Cost saved" });
-      response = res.startedMessage;
+      response = res.saveCost();
       await updateState(sender_psid, { description: received_message });
-      addNewCost(sender_psid, await getState(sender_psid));
-      clearState(sender_psid);
 
       // If user wrote text message when he had to select category
     } else if (state && !state.category) {

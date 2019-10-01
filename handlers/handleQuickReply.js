@@ -1,6 +1,6 @@
 const { updateState, getState, clearState } = require("../services/state");
-const callSendAPI = require("../controllers/callSendAPI");
 const { addNewCost } = require("../services/cost");
+const callSendAPI = require("../controllers/callSendAPI");
 const res = require("../responses/responses");
 
 const handlePostback = async (sender_psid, received_quickReply) => {
@@ -31,15 +31,48 @@ const handlePostback = async (sender_psid, received_quickReply) => {
         updateState(sender_psid, { category: "other" });
         break;
 
-      // Skip description
-      case "<SKIP_DESCRIPTION>":
-        await callSendAPI(sender_psid, { text: "Cost saved" });
-        response = res.startedMessage;
-        await updateState(sender_psid, { description: "skipped" });
-        addNewCost(sender_psid, await getState(sender_psid));
-        clearState(sender_psid);
+      // Amount
+      case "<AMOUNT_50>":
+        response = res.enterDescription;
+        updateState(sender_psid, { amount: 50 });
+        break;
+      case "<AMOUNT_100>":
+        response = res.enterDescription;
+        updateState(sender_psid, { amount: 100 });
+        break;
+      case "<AMOUNT_200>":
+        response = res.enterDescription;
+        updateState(sender_psid, { amount: 200 });
         break;
 
+      // Skip description
+      case "<SKIP_DESCRIPTION>":
+        response = res.saveCost();
+        await updateState(sender_psid, { description: "skipped" });
+        break;
+
+      // Change
+      case "<GO_BACK_TO_CATEGORIES>":
+        response = res.selectCategory;
+        updateState(sender_psid, { category: null });
+        break;
+      case "<GO_BACK_TO_AMOUNT>":
+        response = res.enterAmount;
+        updateState(sender_psid, { amount: null });
+        break;
+      case "<GO_BACK_TO_DESCRIPTION>":
+        response = res.enterDescription;
+        updateState(sender_psid, { description: null });
+        break;
+
+      // Save cost
+      case "<SAVE_COST>":
+        callSendAPI(sender_psid, { text: "Cost saved" });
+        response = res.startedMessage;
+        addNewCost(sender_psid, await getState(sender_psid));
+        clearState(sender_psid);
+
+        break;
       default:
         response = {
           text: `I don't understand quick reply "${payload}" yet.`
