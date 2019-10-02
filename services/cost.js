@@ -1,5 +1,4 @@
 const Cost = require("../models/costs");
-const getNumberWeek = require("../helpers/date");
 
 const addNewCost = (sender_psid, cost_dedails) => {
   const cost = new Cost({
@@ -16,44 +15,44 @@ const addNewCost = (sender_psid, cost_dedails) => {
     .catch(err => console.log(err));
 };
 
-const getCosts = async sender_psid => {
+const getStatisticWeek = async sender_psid => {
+  var now = new Date();
+  let numberDay = now.getDay();
+  var startWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - numberDay);
+  console.log(now);
+  console.log(numberDay);
+  console.log(startWeek);
+
   try {
-    let costs = await Cost.find({ userId: sender_psid });
+    let costs = await Cost.aggregate([
+      {
+        $match: {
+          $and: [{ userId: sender_psid }, { date: { $gte: startWeek } }]
+        }
+      },
+      { $group: { _id: "$category", sum: { $sum: "$amount" } } }
+    ]);
     if (!costs) throw new Error("Not found costs!");
+
     return costs;
   } catch (err) {
     throw err;
   }
 };
 
-const getCosts_week = async sender_psid => {
-  let currentDate = new Date();
-  let numberCurrentWeek = getNumberWeek(currentDate);
-  let costsForWeek = [];
-
-  try {
-    let costs = await Cost.find({ userId: sender_psid });
-    if (!costs) throw new Error("Not found costs!");
-    costs.map(cost => {
-      console.log(getNumberWeek(cost.date));
-      if (getNumberWeek(cost.date) === numberCurrentWeek) {
-        costsForWeek.push(cost);
-      }
-    });
-    return costsForWeek;
-  } catch (err) {
-    throw err;
-  }
-};
-
-const getCosts_today = async sender_psid => {
+const getStatisticDay = async sender_psid => {
   var now = new Date();
   var currentDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   try {
-    let costs = await Cost.find({
-      userId: sender_psid,
-      date: { $gte: todayDate }
-    });
+    let costs = await Cost.aggregate([
+      {
+        $match: {
+          $and: [{ userId: sender_psid }, { date: { $gte: currentDay } }]
+        }
+      },
+      { $group: { _id: "$category", sum: { $sum: "$amount" } } }
+    ]);
+
     if (!costs) throw new Error("Not found costs!");
     return costs;
   } catch (err) {
@@ -61,14 +60,19 @@ const getCosts_today = async sender_psid => {
   }
 };
 
-const getCosts_month = async sender_psid => {
+const getStatisticMonth = async sender_psid => {
   var now = new Date();
   var currentMonth = new Date(now.getFullYear(), now.getMonth());
   try {
-    let costs = await Cost.find({
-      userId: sender_psid,
-      date: { $gte: currentMonth }
-    });
+    let costs = await Cost.aggregate([
+      {
+        $match: {
+          $and: [{ userId: sender_psid }, { date: { $gte: currentMonth } }]
+        }
+      },
+      { $group: { _id: "$category", sum: { $sum: "$amount" } } }
+    ]);
+
     if (!costs) throw new Error("Not found costs!");
     return costs;
   } catch (err) {
@@ -78,8 +82,7 @@ const getCosts_month = async sender_psid => {
 
 module.exports = {
   addNewCost,
-  getCosts,
-  getCosts_week,
-  getCosts_today,
-  getCosts_month
+  getStatisticWeek,
+  getStatisticMonth,
+  getStatisticDay
 };

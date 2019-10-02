@@ -1,7 +1,14 @@
 const { updateState, getState, clearState } = require("../services/state");
-const _cost = require("../services/cost");
+const { addNewCost } = require("../services/cost");
 const callSendAPI = require("../controllers/callSendAPI");
 const res = require("../responses/responses");
+const category = require("../helpers/categoriesEnum");
+const {
+  statisticDay,
+  statisticMonth,
+  statisticWeek
+} = require("../helpers/statistic");
+const { historyDay, historyMonth, historyWeek } = require("../helpers/history");
 
 const handlePostback = async (sender_psid, received_quickReply) => {
   let response;
@@ -12,23 +19,23 @@ const handlePostback = async (sender_psid, received_quickReply) => {
       // Categories:
       case "<TRANSPORT>":
         response = res.enterAmount;
-        updateState(sender_psid, { category: "transport" });
+        updateState(sender_psid, { category: category.TRANSPORT });
         break;
       case "<ENTERTAINMENT>":
         response = res.enterAmount;
-        updateState(sender_psid, { category: "entertainment" });
+        updateState(sender_psid, { category: category.ENTERTAINMENT });
         break;
       case "<CLOTHES>":
         response = res.enterAmount;
-        updateState(sender_psid, { category: "clothes" });
+        updateState(sender_psid, { category: category.CLOTHES });
         break;
       case "<FOOD>":
         response = res.enterAmount;
-        updateState(sender_psid, { category: "food" });
+        updateState(sender_psid, { category: category.FOOD });
         break;
       case "<OTHER>":
         response = res.enterAmount;
-        updateState(sender_psid, { category: "other" });
+        updateState(sender_psid, { category: category.OTHER });
         break;
 
       // Amount
@@ -54,11 +61,15 @@ const handlePostback = async (sender_psid, received_quickReply) => {
       // Change
       case "<GO_BACK_TO_CATEGORIES>":
         response = res.selectCategory;
-        updateState(sender_psid, { category: null });
+        updateState(sender_psid, {
+          category: null,
+          amount: null,
+          description: null
+        });
         break;
       case "<GO_BACK_TO_AMOUNT>":
         response = res.enterAmount;
-        updateState(sender_psid, { amount: null });
+        updateState(sender_psid, { amount: null, description: null });
         break;
       case "<GO_BACK_TO_DESCRIPTION>":
         response = res.enterDescription;
@@ -69,22 +80,30 @@ const handlePostback = async (sender_psid, received_quickReply) => {
       case "<SAVE_COST>":
         callSendAPI(sender_psid, { text: "Cost saved" });
         response = res.startedMessage;
-        _cost.addNewCost(sender_psid, await getState(sender_psid));
+        addNewCost(sender_psid, await getState(sender_psid));
         clearState(sender_psid);
         break;
 
       // Statistic
       case "<STATISTIC_DAY>":
-        response = { text: "statistic for today" };
-        console.log(await _cost.getCosts_today(sender_psid));
+        response = { text: await statisticDay(sender_psid) };
         break;
       case "<STATISTIC_WEEK>":
-        response = { text: "statistic for this week" };
-        console.log(await _cost.getCosts_week(sender_psid));
+        response = { text: await statisticWeek(sender_psid) };
         break;
       case "<STATISTIC_MONTH>":
-        response = { text: "statistic for this month" };
-        console.log(await _cost.getCosts_month(sender_psid));
+        response = { text: await statisticMonth(sender_psid) };
+        break;
+
+      // History
+      case "<WATCH_HISTORY_DAY>":
+        response = { text: (await historyDay(sender_psid)).join("\n") };
+        break;
+      case "<WATCH_HISTORY_WEEK>":
+        response = { text: (await historyWeek(sender_psid)).join("\n") };
+        break;
+      case "<WATCH_HISTORY_MONTH>":
+        response = { text: (await historyMonth(sender_psid)).join("\n") };
         break;
 
       default:

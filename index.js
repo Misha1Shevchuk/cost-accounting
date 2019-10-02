@@ -4,7 +4,10 @@ const express = require("express");
 const body_parser = require("body-parser");
 const app = express().use(body_parser.json()); // creates express http server
 const route = require("./routes/route");
-const { addGetStartedButton } = require("./helpers/requests");
+const {
+  addGetStartedButton,
+  addPersistentMenu
+} = require("./helpers/requests");
 
 // Sets server port and logs message on success
 const server = app.listen(process.env.PORT || 1337, () =>
@@ -12,6 +15,7 @@ const server = app.listen(process.env.PORT || 1337, () =>
 );
 
 addGetStartedButton();
+addPersistentMenu();
 
 app.use("/api/messages", route); // Route
 

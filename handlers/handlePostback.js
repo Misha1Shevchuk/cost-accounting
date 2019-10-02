@@ -1,9 +1,14 @@
 const { getUserData } = require("../helpers/requests");
-const { addState, getState } = require("../services/state");
+const { addState, getState, clearState } = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
 const handleMessage = require("./handleMessage");
 const res = require("../responses/responses");
+const {
+  statisticDay,
+  statisticMonth,
+  statisticWeek
+} = require("../helpers/statistic");
 
 const handlePostback = async (sender_psid, received_postback) => {
   // Get the payload for the postback
@@ -18,12 +23,51 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     case "<ADD_COSTS>":
       response = res.selectCategory;
-      if (!(await getState(sender_psid))) addState(sender_psid);
+      await clearState(sender_psid);
+      addState(sender_psid);
       break;
     case "<SHOW_STATISTIC>":
-      // response = { text: "Not ready yet" };
       response = res.showStatistic;
       break;
+
+    // Statistic
+    case "<STATISTIC_DAY>":
+      response = {
+        text: await statisticDay(sender_psid),
+        quick_replies: [
+          {
+            content_type: "text",
+            title: "Watch history",
+            payload: "<WATCH_HISTORY_DAY>"
+          }
+        ]
+      };
+      break;
+    case "<STATISTIC_WEEK>":
+      response = {
+        text: await statisticWeek(sender_psid),
+        quick_replies: [
+          {
+            content_type: "text",
+            title: "Watch history",
+            payload: "<WATCH_HISTORY_WEEK>"
+          }
+        ]
+      };
+      break;
+    case "<STATISTIC_MONTH>":
+      response = {
+        text: await statisticMonth(sender_psid),
+        quick_replies: [
+          {
+            content_type: "text",
+            title: "Watch history",
+            payload: "<WATCH_HISTORY_MONTH>"
+          }
+        ]
+      };
+      break;
+
     default:
       response = {
         text: `I don't understand postback "${payload}" yet.`

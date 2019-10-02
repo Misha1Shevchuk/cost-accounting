@@ -1,3 +1,5 @@
+const category = require("../helpers/categoriesEnum");
+
 module.exports.startedMessage = {
   attachment: {
     type: "template",
@@ -25,27 +27,27 @@ module.exports.selectCategory = {
   quick_replies: [
     {
       content_type: "text",
-      title: "transport",
+      title: category.TRANSPORT,
       payload: "<TRANSPORT>"
     },
     {
       content_type: "text",
-      title: "entertainment",
+      title: category.ENTERTAINMENT,
       payload: "<ENTERTAINMENT>"
     },
     {
       content_type: "text",
-      title: "clothes",
+      title: category.CLOTHES,
       payload: "<CLOTHES>"
     },
     {
       content_type: "text",
-      title: "food",
+      title: category.FOOD,
       payload: "<FOOD>"
     },
     {
       content_type: "text",
-      title: "other",
+      title: category.OTHER,
       payload: "<OTHER>"
     }
   ]
@@ -78,7 +80,7 @@ module.exports.enterAmount = {
 };
 
 module.exports.enterDescription = {
-  text: "Enter description: ",
+  text: "Write description: ",
   quick_replies: [
     {
       content_type: "text",
@@ -89,6 +91,11 @@ module.exports.enterDescription = {
       content_type: "text",
       title: "Change amount",
       payload: "<GO_BACK_TO_AMOUNT>"
+    },
+    {
+      content_type: "text",
+      title: "Change category",
+      payload: "<GO_BACK_TO_CATEGORIES>"
     }
   ]
 };
@@ -106,6 +113,16 @@ module.exports.saveCost = () => {
         content_type: "text",
         title: "Change description",
         payload: "<GO_BACK_TO_DESCRIPTION>"
+      },
+      {
+        content_type: "text",
+        title: "Change amount",
+        payload: "<GO_BACK_TO_AMOUNT>"
+      },
+      {
+        content_type: "text",
+        title: "Change category",
+        payload: "<GO_BACK_TO_CATEGORIES>"
       }
     ]
   };

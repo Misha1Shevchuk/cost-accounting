@@ -1,5 +1,4 @@
 const { updateState, getState, clearState } = require("../services/state");
-const getCosts = require("../services/cost");
 const { getUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
 const res = require("../responses/responses");
@@ -15,14 +14,10 @@ const handleMessage = async (sender_psid, received_message) => {
     if (received_message.toLowerCase() === "test") {
       clearState(sender_psid);
       response = { text: ">" + received_message };
-    } else if (received_message.toLowerCase() === "hello") {
-      clearState(sender_psid);
-      callSendAPI(sender_psid, { text: `Hello, ${user.first_name}!` });
-      response = res.startedMessage;
 
       // If user entered amount
     } else if (state.category && !state.amount) {
-      if (!isNaN(Number(received_message))) {
+      if (!isNaN(Number(received_message)) && Number(received_message) > 0) {
         response = res.enterDescription;
         updateState(sender_psid, { amount: Number(received_message) });
       } else {

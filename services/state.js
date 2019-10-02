@@ -35,7 +35,6 @@ const updateState = async (sender_psid, param) => {
 const clearState = async sender_psid => {
   try {
     await State.findByIdAndDelete(sender_psid);
-    console.log("state cleared");
   } catch (err) {
     console.log(err);
   }
