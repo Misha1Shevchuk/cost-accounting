@@ -1,6 +1,6 @@
 const Cost = require("../models/costs");
-const getNumberWeek = require("../helpers/date");
 
+// Get history costs for current month
 const getHistoryMonth = async sender_psid => {
   var now = new Date();
   var currentMonth = new Date(now.getFullYear(), now.getMonth());
@@ -16,25 +16,26 @@ const getHistoryMonth = async sender_psid => {
   }
 };
 
+// Get history costs for current week
 const getHistoryWeek = async sender_psid => {
-  let currentDate = new Date();
-  let numberCurrentWeek = getNumberWeek(currentDate);
-  let costsForWeek = [];
+  var now = new Date();
+  let numberDay = now.getDay();
+  var dateOfStartWeek = new Date();
+  dateOfStartWeek.setDate(now.getDate() - numberDay + 1);
 
   try {
-    let costs = await Cost.find({ userId: sender_psid });
-    if (!costs) throw new Error("Not found costs!");
-    costs.map(cost => {
-      if (getNumberWeek(cost.date) === numberCurrentWeek) {
-        costsForWeek.push(cost);
-      }
+    let costs = await Cost.find({
+      $and: [{ userId: sender_psid }, { date: { $gte: dateOfStartWeek } }]
     });
-    return costsForWeek;
+    if (!costs) throw new Error("Not found costs!");
+
+    return costs;
   } catch (err) {
     throw err;
   }
 };
 
+// Get history costs for today
 const getHistoryDay = async sender_psid => {
   var now = new Date();
   var currentDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());

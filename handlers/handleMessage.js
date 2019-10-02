@@ -1,12 +1,10 @@
 const { updateState, getState, clearState } = require("../services/state");
-const { getUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
 const res = require("../responses/responses");
 
 const handleMessage = async (sender_psid, received_message) => {
   let response;
   let state = await getState(sender_psid);
-  let user = await getUser(sender_psid);
 
   // Checks if the message contains text
   if (received_message) {
@@ -31,7 +29,6 @@ const handleMessage = async (sender_psid, received_message) => {
 
       // If user wrote text message when he had to select category
     } else if (state && !state.category) {
-      console.log("category");
       response = res.selectCategory;
     } else {
       response = {

@@ -1,9 +1,9 @@
 const { getUserData } = require("../helpers/requests");
-const { addState, getState, clearState } = require("../services/state");
+const { addState, clearState } = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
-const handleMessage = require("./handleMessage");
 const res = require("../responses/responses");
+
 const {
   statisticDay,
   statisticMonth,
@@ -19,7 +19,8 @@ const handlePostback = async (sender_psid, received_postback) => {
     case "<GET_STARTED_PAYLOAD>":
       let userData = await getUserData(sender_psid);
       if (!(await getUser(sender_psid))) addNewUser(sender_psid, userData);
-      handleMessage(sender_psid, "hello");
+      callSendAPI(sender_psid, { text: `Hello ${userData.first_name}!` });
+      response = res.startedMessage;
       break;
     case "<ADD_COSTS>":
       response = res.selectCategory;

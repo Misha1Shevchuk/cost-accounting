@@ -1,5 +1,6 @@
 const Cost = require("../models/costs");
 
+// Add new cost to db
 const addNewCost = (sender_psid, cost_dedails) => {
   const cost = new Cost({
     amount: cost_dedails.amount,
@@ -15,19 +16,18 @@ const addNewCost = (sender_psid, cost_dedails) => {
     .catch(err => console.log(err));
 };
 
+// Statistic for current week
 const getStatisticWeek = async sender_psid => {
   var now = new Date();
   let numberDay = now.getDay();
-  var startWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - numberDay);
-  console.log(now);
-  console.log(numberDay);
-  console.log(startWeek);
+  var dateOfStartWeek = new Date();
+  dateOfStartWeek.setDate(now.getDate() - numberDay);
 
   try {
     let costs = await Cost.aggregate([
       {
         $match: {
-          $and: [{ userId: sender_psid }, { date: { $gte: startWeek } }]
+          $and: [{ userId: sender_psid }, { date: { $gte: dateOfStartWeek } }]
         }
       },
       { $group: { _id: "$category", sum: { $sum: "$amount" } } }
@@ -40,6 +40,7 @@ const getStatisticWeek = async sender_psid => {
   }
 };
 
+// Statistic for today
 const getStatisticDay = async sender_psid => {
   var now = new Date();
   var currentDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -60,6 +61,7 @@ const getStatisticDay = async sender_psid => {
   }
 };
 
+// Statistic for current month
 const getStatisticMonth = async sender_psid => {
   var now = new Date();
   var currentMonth = new Date(now.getFullYear(), now.getMonth());

@@ -5,7 +5,7 @@ const {
 } = require("../services/cost");
 
 const statisticDay = async sender_psid => {
-  let responseText = `*statistic for today:*`;
+  let responseText = `statistic for today:`;
   (await getStatisticDay(sender_psid)).forEach(category => {
     responseText += "\n" + category._id + ": " + category.sum;
   });
@@ -13,7 +13,7 @@ const statisticDay = async sender_psid => {
 };
 
 const statisticWeek = async sender_psid => {
-  responseText = `*statistic for this week:*`;
+  responseText = `statistic for this week:`;
   (await getStatisticWeek(sender_psid)).forEach(category => {
     responseText += "\n" + category._id + ": " + category.sum;
   });
@@ -21,7 +21,7 @@ const statisticWeek = async sender_psid => {
 };
 
 const statisticMonth = async sender_psid => {
-  responseText = `*statistic for this month:*`;
+  responseText = `statistic for this month:`;
   (await getStatisticMonth(sender_psid)).forEach(category => {
     responseText += "\n" + category._id + ": " + category.sum;
   });
