@@ -22,7 +22,7 @@ module.exports.startedMessage = {
         {
           type: "web_url",
           title: "Watch history",
-          webview_height_ratio: "compact",
+          webview_height_ratio: "tall",
           messenger_extensions: true,
           url: SERVER_URL + "/webview"
         }

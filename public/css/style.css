@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.history_list {
+  background-color: #eeecec;
+  width: 100%;
+  padding: 1px 5px;
+  list-style: none;
+  display: block;
+}
+
+.history_list_item {
+  border-radius: 10px;
+  background-color: #fff;
+  margin: 4px 0;
+  padding: 5px 8px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.btn {
+  display: block;
+  border: none;
+  background-color: #49acda;
+  padding: 5px 10px;
+  font-weight: bold;
+  transition: background-color 0.2s linear;
+  border-radius: 10px;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: #8dd8e6;
+}

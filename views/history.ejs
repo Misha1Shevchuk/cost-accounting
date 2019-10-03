@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Account History</title>
 </head>
@@ -50,11 +51,25 @@
         };
     </script>
 
-    <% for(var i=0; i<data.length;i++) {%>
-    <span><%=data[i].amount + " " + data[i].category + " " + data[i].date.getDate() + "." + data[i].date.getMonth() + "." + data[i].date.getFullYear()%></span>
-    <button>delete</button>
-    <br>
-    <% }%>
+
+    <ul class="history_list">
+        <% for(var i=0; i<data.length;i++) {%>
+        <li class="history_list_item">
+            <div class="cost_info">
+                <p class="amount">Amount: <%=data[i].amount%></p>
+                <p class="date">Date:
+                    <%=data[i].date.getDate() + "." + data[i].date.getMonth() + "." + data[i].date.getFullYear()%>
+                </p>
+                <p class="category">Category: <%=data[i].category%></p>
+                <% if(data[i].description !== "skipped") {%>
+                <p class="description">Description: <%=data[i].description%></p>
+                <% }%>
+            </div>
+
+            <button class="btn">delete</button>
+            <% }%>
+        </li>
+    </ul>
 </body>
 
 </html>
