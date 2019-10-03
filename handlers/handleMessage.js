@@ -11,7 +11,7 @@ const handleMessage = async (sender_psid, received_message) => {
     // Started message
     if (received_message.toLowerCase() === "test") {
       clearState(sender_psid);
-      response = { text: ">" + received_message };
+      response = res.startedMessage;
 
       // If user entered amount
     } else if (state.category && !state.amount) {

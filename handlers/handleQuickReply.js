@@ -8,7 +8,7 @@ const {
   statisticMonth,
   statisticWeek
 } = require("../helpers/statistic");
-const { historyDay, historyMonth, historyWeek } = require("../helpers/history");
+const { history } = require("../helpers/history");
 
 const handlePostback = async (sender_psid, received_quickReply) => {
   let response;
@@ -17,6 +17,10 @@ const handlePostback = async (sender_psid, received_quickReply) => {
   try {
     switch (payload) {
       // Categories:
+      case "<PROFIT>":
+        response = res.enterAmount;
+        updateState(sender_psid, { category: category.PROFIT });
+        break;
       case "<TRANSPORT>":
         response = res.enterAmount;
         updateState(sender_psid, { category: category.TRANSPORT });
@@ -32,6 +36,13 @@ const handlePostback = async (sender_psid, received_quickReply) => {
       case "<FOOD>":
         response = res.enterAmount;
         updateState(sender_psid, { category: category.FOOD });
+        break;
+      case "<BEAUTY_AND_HEALTH>":
+        response = res.enterAmount;
+        updateState(sender_psid, { category: category.BEAUTY_AND_HEALTH });
+      case "<UTILITES>":
+        response = res.enterAmount;
+        updateState(sender_psid, { category: category.UTILITES });
         break;
       case "<OTHER>":
         response = res.enterAmount;
@@ -86,24 +97,56 @@ const handlePostback = async (sender_psid, received_quickReply) => {
 
       // Statistic
       case "<STATISTIC_DAY>":
-        response = { text: await statisticDay(sender_psid) };
+        response = {
+          text: await statisticDay(sender_psid),
+          quick_replies: [
+            {
+              content_type: "text",
+              title: "Watch history",
+              payload: "<WATCH_HISTORY>"
+            }
+          ]
+        };
         break;
       case "<STATISTIC_WEEK>":
-        response = { text: await statisticWeek(sender_psid) };
+        response = {
+          text: await statisticWeek(sender_psid),
+          quick_replies: [
+            {
+              content_type: "text",
+              title: "Watch history",
+              payload: "<WATCH_HISTORY>"
+            }
+          ]
+        };
         break;
       case "<STATISTIC_MONTH>":
-        response = { text: await statisticMonth(sender_psid) };
+        response = {
+          text: await statisticMonth(sender_psid),
+          quick_replies: [
+            {
+              content_type: "text",
+              title: "Watch history",
+              payload: "<WATCH_HISTORY>"
+            }
+          ]
+        };
         break;
 
       // History
-      case "<WATCH_HISTORY_DAY>":
-        response = { text: (await historyDay(sender_psid)).join("\n") };
-        break;
-      case "<WATCH_HISTORY_WEEK>":
-        response = { text: (await historyWeek(sender_psid)).join("\n") };
-        break;
-      case "<WATCH_HISTORY_MONTH>":
-        response = { text: (await historyMonth(sender_psid)).join("\n") };
+      case "<WATCH_HISTORY>":
+        response = { text: (await history(sender_psid)).join("\n") };
+
+        let items = await history(sender_psid);
+        response = {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "generic",
+              elements: [...items]
+            }
+          }
+        };
         break;
 
       default:

@@ -1,8 +1,11 @@
 const categoriesEnum = Object.freeze({
+  PROFIT: "profit",
+  FOOD: "food",
   TRANSPORT: "transport",
   CLOTHES: "clothes",
-  FOOD: "food",
   ENTERTAINMENT: "entertainment",
+  BEAUTY_AND_HEALTH: "beauty&health",
+  UTILITES: "utilites",
   OTHER: "other"
 });
 

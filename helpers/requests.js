@@ -20,7 +20,7 @@ const addGetStartedButton = () => {
     greeting: [
       {
         locale: "default",
-        text: "Hello {{user_first_name}}! Lets started!"
+        text: "Hello, {{user_first_name}}! Lets started!"
       }
     ]
   };

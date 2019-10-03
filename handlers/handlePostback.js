@@ -39,7 +39,7 @@ const handlePostback = async (sender_psid, received_postback) => {
           {
             content_type: "text",
             title: "Watch history",
-            payload: "<WATCH_HISTORY_DAY>"
+            payload: "<WATCH_HISTORY>"
           }
         ]
       };
@@ -51,7 +51,7 @@ const handlePostback = async (sender_psid, received_postback) => {
           {
             content_type: "text",
             title: "Watch history",
-            payload: "<WATCH_HISTORY_WEEK>"
+            payload: "<WATCH_HISTORY>"
           }
         ]
       };
@@ -63,7 +63,7 @@ const handlePostback = async (sender_psid, received_postback) => {
           {
             content_type: "text",
             title: "Watch history",
-            payload: "<WATCH_HISTORY_MONTH>"
+            payload: "<WATCH_HISTORY>"
           }
         ]
       };

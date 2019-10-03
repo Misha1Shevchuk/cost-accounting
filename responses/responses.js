@@ -1,4 +1,6 @@
 const category = require("../helpers/categoriesEnum");
+require("dotenv").config();
+SERVER_URL = process.env.SERVER_URL;
 
 module.exports.startedMessage = {
   attachment: {
@@ -9,13 +11,20 @@ module.exports.startedMessage = {
       buttons: [
         {
           type: "postback",
-          title: "New cost",
+          title: "Add new cost",
           payload: "<ADD_COSTS>"
         },
         {
           type: "postback",
-          title: "Show statistic",
+          title: "Watch statistic",
           payload: "<SHOW_STATISTIC>"
+        },
+        {
+          type: "web_url",
+          title: "Watch history",
+          webview_height_ratio: "compact",
+          messenger_extensions: true,
+          url: SERVER_URL + "/webview"
         }
       ]
     }
@@ -27,8 +36,18 @@ module.exports.selectCategory = {
   quick_replies: [
     {
       content_type: "text",
+      title: category.PROFIT,
+      payload: "<PROFIT>"
+    },
+    {
+      content_type: "text",
       title: category.TRANSPORT,
       payload: "<TRANSPORT>"
+    },
+    {
+      content_type: "text",
+      title: category.FOOD,
+      payload: "<FOOD>"
     },
     {
       content_type: "text",
@@ -37,13 +56,18 @@ module.exports.selectCategory = {
     },
     {
       content_type: "text",
+      title: category.BEAUTY_AND_HEALTH,
+      payload: "<BEAUTY_AND_HEALTH>"
+    },
+    {
+      content_type: "text",
       title: category.CLOTHES,
       payload: "<CLOTHES>"
     },
     {
       content_type: "text",
-      title: category.FOOD,
-      payload: "<FOOD>"
+      title: category.UTILITES,
+      payload: "<UTILITES>"
     },
     {
       content_type: "text",
