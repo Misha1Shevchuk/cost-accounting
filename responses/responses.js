@@ -6,25 +6,45 @@ module.exports.startedMessage = {
   attachment: {
     type: "template",
     payload: {
-      template_type: "button",
-      text: "What do you want to do?",
-      buttons: [
+      template_type: "generic",
+      elements: [
         {
-          type: "postback",
-          title: "Add new cost",
-          payload: "<ADD_COSTS>"
+          title: "Money",
+          subtitle: "What do you want to add?",
+          image_url:
+            "https://pi.tedcdn.com/r/talkstar-assets.s3.amazonaws.com/production/playlists/playlist_306/how_to_spend_your_money_1200x627.jpg?quality=89&w=800",
+          buttons: [
+            {
+              type: "postback",
+              title: "spend",
+              payload: "<ADD_COSTS>"
+            },
+            {
+              type: "postback",
+              title: "profit",
+              payload: "<ADD_PROFIT>"
+            }
+          ]
         },
         {
-          type: "postback",
-          title: "Watch statistic",
-          payload: "<SHOW_STATISTIC>"
-        },
-        {
-          type: "web_url",
-          title: "Watch history",
-          webview_height_ratio: "tall",
-          messenger_extensions: true,
-          url: SERVER_URL + "/webview"
+          title: "Statistic",
+          subtitle: "What do you want to watch?",
+          image_url:
+            "https://c.pxhere.com/images/b9/27/e3c21934dcf17ccb54fdaf997f04-1584291.jpg!d",
+          buttons: [
+            {
+              type: "postback",
+              title: "statistic",
+              payload: "<SHOW_STATISTIC>"
+            },
+            {
+              type: "web_url",
+              title: "history",
+              webview_height_ratio: "tall",
+              messenger_extensions: true,
+              url: SERVER_URL + "/webview"
+            }
+          ]
         }
       ]
     }
@@ -34,11 +54,6 @@ module.exports.startedMessage = {
 module.exports.selectCategory = {
   text: "Select category",
   quick_replies: [
-    {
-      content_type: "text",
-      title: category.PROFIT,
-      payload: "<PROFIT>"
-    },
     {
       content_type: "text",
       title: category.TRANSPORT,
@@ -126,7 +141,7 @@ module.exports.enterDescription = {
 
 module.exports.saveCost = () => {
   response = {
-    text: "Can i save your cost?",
+    text: "Can i save your spend?",
     quick_replies: [
       {
         content_type: "text",

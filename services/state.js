@@ -1,13 +1,13 @@
 const State = require("../models/state");
 
-const addState = sender_psid => {
+const addState = async sender_psid => {
   const state = new State({
     _id: sender_psid,
     category: null,
     amount: null,
     description: null
   });
-  state
+  await state
     .save()
     .then(data => data)
     .catch(err => console.log(err));

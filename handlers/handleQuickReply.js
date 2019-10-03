@@ -17,10 +17,6 @@ const handlePostback = async (sender_psid, received_quickReply) => {
   try {
     switch (payload) {
       // Categories:
-      case "<PROFIT>":
-        response = res.enterAmount;
-        updateState(sender_psid, { category: category.PROFIT });
-        break;
       case "<TRANSPORT>":
         response = res.enterAmount;
         updateState(sender_psid, { category: category.TRANSPORT });
@@ -89,7 +85,7 @@ const handlePostback = async (sender_psid, received_quickReply) => {
 
       // Save cost
       case "<SAVE_COST>":
-        callSendAPI(sender_psid, { text: "Cost saved" });
+        callSendAPI(sender_psid, { text: "Spend saved" });
         response = res.startedMessage;
         addNewCost(sender_psid, await getState(sender_psid));
         clearState(sender_psid);
@@ -97,56 +93,17 @@ const handlePostback = async (sender_psid, received_quickReply) => {
 
       // Statistic
       case "<STATISTIC_DAY>":
-        response = {
-          text: await statisticDay(sender_psid),
-          quick_replies: [
-            {
-              content_type: "text",
-              title: "Watch history",
-              payload: "<WATCH_HISTORY>"
-            }
-          ]
-        };
+        callSendAPI(sender_psid, { text: await statisticDay(sender_psid) });
+        response = res.startedMessage;
+
         break;
       case "<STATISTIC_WEEK>":
-        response = {
-          text: await statisticWeek(sender_psid),
-          quick_replies: [
-            {
-              content_type: "text",
-              title: "Watch history",
-              payload: "<WATCH_HISTORY>"
-            }
-          ]
-        };
+        callSendAPI(sender_psid, { text: await statisticWeek(sender_psid) });
+        response = res.startedMessage;
         break;
       case "<STATISTIC_MONTH>":
-        response = {
-          text: await statisticMonth(sender_psid),
-          quick_replies: [
-            {
-              content_type: "text",
-              title: "Watch history",
-              payload: "<WATCH_HISTORY>"
-            }
-          ]
-        };
-        break;
-
-      // History
-      case "<WATCH_HISTORY>":
-        response = { text: (await history(sender_psid)).join("\n") };
-
-        let items = await history(sender_psid);
-        response = {
-          attachment: {
-            type: "template",
-            payload: {
-              template_type: "generic",
-              elements: [...items]
-            }
-          }
-        };
+        callSendAPI(sender_psid, { text: await statisticMonth(sender_psid) });
+        response = res.startedMessage;
         break;
 
       default:

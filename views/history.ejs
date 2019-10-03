@@ -56,13 +56,13 @@
         <% for(var i=0; i<data.length;i++) {%>
         <li class="history_list_item">
             <div class="cost_info">
-                <p class="amount">Amount: <%=data[i].amount%></p>
                 <p class="date">Date:
                     <%=data[i].date.getDate() + "." + data[i].date.getMonth() + "." + data[i].date.getFullYear()%>
                 </p>
+                <p class="amount">Amount: <%=data[i].amount%></p>
                 <p class="category">Category: <%=data[i].category%></p>
-                <% if(data[i].description !== "skipped") {%>
                 <p class="description">Description: <%=data[i].description%></p>
+                <% if(data[i].description !== "skipped") {%>
                 <% }%>
             </div>
 

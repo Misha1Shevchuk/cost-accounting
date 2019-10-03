@@ -1,9 +1,9 @@
 const { getUserData } = require("../helpers/requests");
-const { addState, clearState } = require("../services/state");
+const { addState, clearState, updateState } = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
 const res = require("../responses/responses");
-
+const category = require("../helpers/categoriesEnum");
 const {
   statisticDay,
   statisticMonth,
@@ -31,42 +31,28 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = res.showStatistic;
       break;
 
+    // Add profit
+    case "<ADD_PROFIT>":
+      await clearState(sender_psid);
+      response = res.enterAmount;
+      let state = await addState(sender_psid);
+      console.log(state);
+
+      updateState(sender_psid, { category: category.PROFIT });
+      break;
+
     // Statistic
     case "<STATISTIC_DAY>":
-      response = {
-        text: await statisticDay(sender_psid),
-        quick_replies: [
-          {
-            content_type: "text",
-            title: "Watch history",
-            payload: "<WATCH_HISTORY>"
-          }
-        ]
-      };
+      callSendAPI(sender_psid, { text: await statisticDay(sender_psid) });
+      response = res.startedMessage;
       break;
     case "<STATISTIC_WEEK>":
-      response = {
-        text: await statisticWeek(sender_psid),
-        quick_replies: [
-          {
-            content_type: "text",
-            title: "Watch history",
-            payload: "<WATCH_HISTORY>"
-          }
-        ]
-      };
+      callSendAPI(sender_psid, { text: await statisticWeek(sender_psid) });
+      response = res.startedMessage;
       break;
     case "<STATISTIC_MONTH>":
-      response = {
-        text: await statisticMonth(sender_psid),
-        quick_replies: [
-          {
-            content_type: "text",
-            title: "Watch history",
-            payload: "<WATCH_HISTORY>"
-          }
-        ]
-      };
+      callSendAPI(sender_psid, { text: await statisticMonth(sender_psid) });
+      response = res.startedMessage;
       break;
 
     default:
