@@ -1,6 +1,6 @@
 const State = require("../models/state");
 
-const addState = async sender_psid => {
+const add = async sender_psid => {
   const state = new State({
     _id: sender_psid,
     category: null,
@@ -10,34 +10,35 @@ const addState = async sender_psid => {
   await state
     .save()
     .then(data => data)
-    .catch(err => console.log(err));
+    .catch(err => {
+      throw err;
+    });
 };
 
-const getState = async sender_psid => {
+const get = async sender_psid => {
   try {
-    let state = await State.findById(sender_psid);
-    return state;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const updateState = async (sender_psid, param) => {
-  try {
-    let state = await State.findById(sender_psid);
-    if (!state) throw new Error("Not found state!");
-    await State.updateOne({ _id: sender_psid }, param);
+    return await State.findById(sender_psid);
   } catch (err) {
     throw err;
   }
 };
 
-const clearState = async sender_psid => {
+const update = async (sender_psid, param) => {
   try {
-    await State.findByIdAndDelete(sender_psid);
+    let state = await State.findById(sender_psid);
+    if (!state) throw new Error("Not found state!");
+    return await State.updateOne({ _id: sender_psid }, param);
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
-module.exports = { addState, updateState, getState, clearState };
+const clear = async sender_psid => {
+  try {
+    return await State.findByIdAndDelete(sender_psid);
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = { add, update, get, clear };

@@ -1,5 +1,4 @@
 const categoriesEnum = Object.freeze({
-  PROFIT: "profit",
   FOOD: "food",
   TRANSPORT: "transport",
   CLOTHES: "clothes",

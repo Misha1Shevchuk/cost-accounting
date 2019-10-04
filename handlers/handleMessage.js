@@ -1,35 +1,43 @@
-const { updateState, getState, clearState } = require("../services/state");
+const state = require("../services/state");
 const callSendAPI = require("../controllers/callSendAPI");
-const res = require("../responses/responses");
+const { startedMessage } = require("../responses/typical");
+const spend = require("../responses/spends");
+const earning = require("../responses/earnings");
 
 const handleMessage = async (sender_psid, received_message) => {
   let response;
-  let state = await getState(sender_psid);
+  let userState = await state.get(sender_psid);
 
   // Checks if the message contains text
   if (received_message) {
     // Started message
     if (received_message.toLowerCase() === "test") {
-      clearState(sender_psid);
-      response = res.startedMessage;
+      state.clear(sender_psid);
+      response = startedMessage(sender_psid);
 
       // If user entered amount
-    } else if (state.category && !state.amount) {
+    } else if (userState.category && !userState.amount) {
       if (!isNaN(Number(received_message)) && Number(received_message) > 0) {
-        response = res.enterDescription;
-        updateState(sender_psid, { amount: Number(received_message) });
+        userState.category !== "earning"
+          ? (response = spend.enterDescription)
+          : (response = earning.enterDescription);
+        state.update(sender_psid, { amount: Number(received_message) });
       } else {
-        response = res.enterAmount;
+        userState.category !== "earning"
+          ? (response = spend.enterAmount)
+          : (response = earning.enterAmount);
       }
 
       // If user entered description
-    } else if (state.amount && !state.description) {
-      response = res.saveCost();
-      await updateState(sender_psid, { description: received_message });
+    } else if (userState.amount && !userState.description) {
+      userState.category !== "earning"
+        ? (response = spend.saveSpend)
+        : (response = earning.saveEarning);
+      await state.update(sender_psid, { description: received_message });
 
       // If user wrote text message when he had to select category
-    } else if (state && !state.category) {
-      response = res.selectCategory;
+    } else if (userState && !userState.category) {
+      response = spend.selectCategory;
     } else {
       response = {
         text: `I don't understand message "${received_message}" yet.`

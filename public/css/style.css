@@ -27,17 +27,30 @@
   -o-border-radius: 10px;
 }
 
+.cost_info {
+  max-width: 80%;
+}
+
+.description {
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
 .btn {
   display: block;
   border: none;
-  background-color: #49acda;
-  padding: 5px 10px;
-  font-weight: bold;
+  background-color: #367bd4;
+  color: #fff;
+  padding: 7px 12px;
+  margin-right: 5px;
+  font-size: 1em;
   transition: background-color 0.2s linear;
-  border-radius: 10px;
+  outline: none;
+  user-select: none;
+  border-radius: 20px;
 }
 
 .btn:hover {
   cursor: pointer;
-  background-color: #8dd8e6;
+  background-color: #1b47d8;
 }

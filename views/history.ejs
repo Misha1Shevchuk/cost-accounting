@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/public/css/style.css" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Account History</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/public/css/style.css" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Account History</title>
 </head>
 
 <body>
-    <script>
+<script src="/public/js/webview.js"></script>
+<script>
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
@@ -41,32 +42,25 @@
                 // error retrieving supported features
                 console.log(err);
             });
-            document.getElementById('submitButton').addEventListener('click', () => {
-                MessengerExtensions.requestCloseBrowser(function success() {
-                    console.log("Webview closing");
-                }, function error(err) {
-                    console.log(err);
-                });
-            });
         };
     </script>
 
 
     <ul class="history_list">
         <% for(var i=0; i<data.length;i++) {%>
-        <li class="history_list_item">
+        <li class="history_list_item" id=<%="li_"+data[i]._id%>>
             <div class="cost_info">
-                <p class="date">Date:
+                <p class="date"><b>Date: </b>
                     <%=data[i].date.getDate() + "." + data[i].date.getMonth() + "." + data[i].date.getFullYear()%>
                 </p>
-                <p class="amount">Amount: <%=data[i].amount%></p>
-                <p class="category">Category: <%=data[i].category%></p>
-                <p class="description">Description: <%=data[i].description%></p>
+                <p class="amount"><b>Amount: </b><%=data[i].amount%></p>
                 <% if(data[i].description !== "skipped") {%>
+                <p class="description"><b>Description: </b><%=data[i].description%></p>
                 <% }%>
+                <p class="category"><b>Category: </b><%=data[i].category%></p>
             </div>
 
-            <button class="btn">delete</button>
+            <button class="btn" id=<%="del_"+data[i]._id%> onclick="deleteItem(this)">delete</button>
             <% }%>
         </li>
     </ul>

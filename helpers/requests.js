@@ -1,8 +1,6 @@
 const axios = require("axios");
-require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
-const getUserData = async sender_psid => {
+const getUserData = async (sender_psid, PAGE_ACCESS_TOKEN) => {
   return await axios
     .get(
       "https://graph.facebook.com/" +
@@ -14,7 +12,7 @@ const getUserData = async sender_psid => {
 };
 
 // Add button "get started"
-const addGetStartedButton = () => {
+const addGetStartedButton = PAGE_ACCESS_TOKEN => {
   const data = {
     get_started: { payload: "<GET_STARTED_PAYLOAD>" },
     greeting: [
@@ -29,16 +27,24 @@ const addGetStartedButton = () => {
       `https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
       data
     )
-    .then(async res => {
-      if (res.sender_psid) {
-        let userData = await getUserData(res.sender_psid);
-      }
-    })
+    .catch(err => err);
+};
+
+// Add button "get started"
+const addUrlToWhiteList = (SERVER_URL, PAGE_ACCESS_TOKEN) => {
+  const data = {
+    whitelisted_domains: [SERVER_URL]
+  };
+  axios
+    .post(
+      `https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
+      data
+    )
     .catch(err => err);
 };
 
 // Persistent menu
-const addPersistentMenu = () => {
+const addPersistentMenu = PAGE_ACCESS_TOKEN => {
   const data = {
     persistent_menu: [
       {
@@ -47,8 +53,13 @@ const addPersistentMenu = () => {
         call_to_actions: [
           {
             type: "postback",
-            title: "New cost",
-            payload: "<ADD_COSTS>"
+            title: "New spend",
+            payload: "<ADD_SPEND>"
+          },
+          {
+            type: "postback",
+            title: "New earning",
+            payload: "<ADD_EARNING>"
           },
           {
             title: "Show statistic",
@@ -84,7 +95,7 @@ const addPersistentMenu = () => {
 };
 
 // sender action
-const addSenderAction = sender_psid => {
+const addSenderAction = (sender_psid, PAGE_ACCESS_TOKEN) => {
   const data = {
     recipient: {
       id: sender_psid
@@ -103,5 +114,6 @@ module.exports = {
   getUserData,
   addGetStartedButton,
   addSenderAction,
-  addPersistentMenu
+  addPersistentMenu,
+  addUrlToWhiteList
 };

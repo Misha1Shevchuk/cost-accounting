@@ -2,9 +2,10 @@ const handleMessage = require("../handlers/handleMessage");
 const handlePostback = require("../handlers/handlePostback");
 const handleQuickReply = require("../handlers/handleQuickReply");
 const callSendAPI = require("../controllers/callSendAPI");
-const { addSenderAction } = require("../helpers/requests");
-const responseMessage = require("../responses/responses");
+const { addSenderAction, addUrlToWhiteList } = require("../helpers/requests");
 require("dotenv").config();
+const SERVER_URL = process.env.SERVER_URL;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 module.exports.newMessage = (req, res) => {
   // Parse the request body from the POST
@@ -18,7 +19,7 @@ module.exports.newMessage = (req, res) => {
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      addSenderAction(sender_psid);
+      addSenderAction(sender_psid, PAGE_ACCESS_TOKEN);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
@@ -53,9 +54,11 @@ module.exports.get = (req, res) => {
     if (mode === "subscribe" && token === VERIFY_TOKEN) {
       // Respond with 200 OK and challenge token from the request
       console.log("WEBHOOK_VERIFIED");
+
+      addUrlToWhiteList(SERVER_URL, PAGE_ACCESS_TOKEN);
       res.status(200).send(challenge);
     } else {
-      res.sendStatus(200);
+      res.status(200).json({ error: "Webhook isn't verified" });
     }
   }
 };

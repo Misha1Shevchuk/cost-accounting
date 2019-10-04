@@ -7,7 +7,6 @@ const getHistory = async sender_psid => {
       .sort({ date: -1 })
       .limit(100);
     if (!costs) throw new Error("Not found costs!");
-
     return costs;
   } catch (err) {
     throw err;

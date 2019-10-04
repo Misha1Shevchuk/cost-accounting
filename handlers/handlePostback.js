@@ -1,14 +1,13 @@
 const { getUserData } = require("../helpers/requests");
-const { addState, clearState, updateState } = require("../services/state");
+const state = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
-const res = require("../responses/responses");
-const category = require("../helpers/categoriesEnum");
-const {
-  statisticDay,
-  statisticMonth,
-  statisticWeek
-} = require("../helpers/statistic");
+const { startedMessage, showStatistic, goOn } = require("../responses/typical");
+const spend = require("../responses/spends");
+const earning = require("../responses/earnings");
+const statistic = require("../helpers/statistic");
+require("dotenv").config();
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 const handlePostback = async (sender_psid, received_postback) => {
   // Get the payload for the postback
@@ -17,42 +16,39 @@ const handlePostback = async (sender_psid, received_postback) => {
 
   switch (payload) {
     case "<GET_STARTED_PAYLOAD>":
-      let userData = await getUserData(sender_psid);
+      let userData = await getUserData(sender_psid, PAGE_ACCESS_TOKEN);
       if (!(await getUser(sender_psid))) addNewUser(sender_psid, userData);
-      callSendAPI(sender_psid, { text: `Hello ${userData.first_name}!` });
-      response = res.startedMessage;
+      setTimeout(() => {
+        callSendAPI(sender_psid, startedMessage(sender_psid));
+      }, 1000);
+      response = { text: `Hello ${userData.first_name}!` };
       break;
-    case "<ADD_COSTS>":
-      response = res.selectCategory;
-      await clearState(sender_psid);
-      addState(sender_psid);
+    case "<ADD_SPEND>":
+      response = spend.selectCategory;
+      await state.clear(sender_psid);
+      await state.add(sender_psid);
       break;
+
+    // Add Earning
+    case "<ADD_EARNING>":
+      response = earning.enterAmount;
+      await state.clear(sender_psid);
+      await state.add(sender_psid);
+      await state.update(sender_psid, { category: "earning" });
+      break;
+
     case "<SHOW_STATISTIC>":
-      response = res.showStatistic;
+      response = showStatistic;
       break;
-
-    // Add profit
-    case "<ADD_PROFIT>":
-      await clearState(sender_psid);
-      response = res.enterAmount;
-      let state = await addState(sender_psid);
-      console.log(state);
-
-      updateState(sender_psid, { category: category.PROFIT });
-      break;
-
     // Statistic
     case "<STATISTIC_DAY>":
-      callSendAPI(sender_psid, { text: await statisticDay(sender_psid) });
-      response = res.startedMessage;
+      response = goOn(await statistic.Day(sender_psid));
       break;
     case "<STATISTIC_WEEK>":
-      callSendAPI(sender_psid, { text: await statisticWeek(sender_psid) });
-      response = res.startedMessage;
+      response = goOn(await statistic.Week(sender_psid));
       break;
     case "<STATISTIC_MONTH>":
-      callSendAPI(sender_psid, { text: await statisticMonth(sender_psid) });
-      response = res.startedMessage;
+      response = goOn(await statistic.Month(sender_psid));
       break;
 
     default:
