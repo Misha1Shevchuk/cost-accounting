@@ -3,7 +3,7 @@ function deleteItem(object) {
 }
 
 function sendIdItem(itemId) {
-  fetch("https://cb4f2d3d.ngrok.io/webview/", {
+  fetch("https://costsaccounter.herokuapp.com/webview", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ itemId: itemId })

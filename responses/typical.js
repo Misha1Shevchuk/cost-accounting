@@ -9,20 +9,20 @@ const startedMessage = sender_psid => {
         template_type: "generic",
         elements: [
           {
-            title: "Money",
+            title: "Money managing",
             subtitle: "What do you want to add?",
             image_url:
               "https://pi.tedcdn.com/r/talkstar-assets.s3.amazonaws.com/production/playlists/playlist_306/how_to_spend_your_money_1200x627.jpg?quality=89&w=800",
             buttons: [
               {
                 type: "postback",
-                title: "spend",
+                title: "Expense",
                 payload: "<ADD_SPEND>"
               },
               {
                 type: "postback",
-                title: "earning",
-                payload: "<ADD_EARNING>"
+                title: "Income",
+                payload: "<ADD_INCOME>"
               }
             ]
           },
@@ -34,13 +34,14 @@ const startedMessage = sender_psid => {
             buttons: [
               {
                 type: "postback",
-                title: "statistic",
+                title: "Stats",
                 payload: "<SHOW_STATISTIC>"
               },
               {
                 type: "web_url",
-                title: "history",
+                title: "History",
                 webview_height_ratio: "tall",
+                webview_share_button: "hide",
                 messenger_extensions: true,
                 url: SERVER_URL + "/webview/" + sender_psid
               }
@@ -70,6 +71,11 @@ const showStatistic = {
       content_type: "text",
       title: "This month",
       payload: "<STATISTIC_MONTH>"
+    },
+    {
+      content_type: "text",
+      title: "All time",
+      payload: "<STATISTIC_ALL_TIME>"
     }
   ]
 };
@@ -82,6 +88,26 @@ const goOn = statistic => {
         content_type: "text",
         title: "Go on!",
         payload: "<STARTED_MESSAGE>"
+      },
+      {
+        type: "text",
+        title: "Today",
+        payload: "<STATISTIC_DAY>"
+      },
+      {
+        type: "text",
+        title: "This week",
+        payload: "<STATISTIC_WEEK>"
+      },
+      {
+        type: "text",
+        title: "This month",
+        payload: "<STATISTIC_MONTH>"
+      },
+      {
+        content_type: "text",
+        title: "All time",
+        payload: "<STATISTIC_ALL_TIME>"
       }
     ]
   };

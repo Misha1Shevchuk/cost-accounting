@@ -2,7 +2,7 @@ const cost = require("../services/cost");
 
 let responseText = "";
 
-const Day = async sender_psid => {
+const day = async sender_psid => {
   var now = new Date();
   var currentDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -13,7 +13,7 @@ const Day = async sender_psid => {
   return responseText;
 };
 
-const Week = async sender_psid => {
+const week = async sender_psid => {
   var now = new Date();
   var dateOfStartWeek = new Date();
   dateOfStartWeek.setDate(now.getDate() - now.getDay());
@@ -24,7 +24,7 @@ const Week = async sender_psid => {
   return responseText;
 };
 
-const Month = async sender_psid => {
+const month = async sender_psid => {
   var now = new Date();
   var currentMonth = new Date(now.getFullYear(), now.getMonth());
   let statisticMonth = toStatisticModel(
@@ -34,9 +34,18 @@ const Month = async sender_psid => {
   return responseText;
 };
 
+const allTime = async sender_psid => {
+  var date = new Date(1970);
+  let statisticMonth = toStatisticModel(
+    await cost.getStatistic(sender_psid, date)
+  );
+  responseText = toFormStatisticMessage(statisticMonth, "all time");
+  return responseText;
+};
+
 const toFormStatisticMessage = (statistic, periodOfTime) => {
   if (statistic.total_spends === 0 && statistic.earning === 0) {
-    responseText = "First add any spends or earning";
+    responseText = "First add any expend or income";
   } else {
     responseText = `statistic for ${periodOfTime}:`;
     statistic.spends.forEach(spend => {
@@ -56,7 +65,7 @@ const toStatisticModel = costs => {
   };
 
   costs.forEach(cost => {
-    if (cost._id === "earning") {
+    if (cost._id === "income") {
       statisticModel.earning = cost.sum;
     } else {
       statisticModel.spends.push({ category: cost._id, sum: cost.sum });
@@ -66,4 +75,4 @@ const toStatisticModel = costs => {
   return statisticModel;
 };
 
-module.exports = { Day, Month, Week };
+module.exports = { day, month, week, allTime };

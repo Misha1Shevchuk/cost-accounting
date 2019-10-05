@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="/public/css/style.css" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Account History</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Account History</title>
 </head>
 
 <body>
-<script src="/public/js/webview.js"></script>
-<script>
+    <script src="/public/js/webview.js"></script>
+    <script>
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
@@ -61,8 +61,8 @@
             </div>
 
             <button class="btn" id=<%="del_"+data[i]._id%> onclick="deleteItem(this)">delete</button>
-            <% }%>
         </li>
+        <% }%>
     </ul>
 </body>
 

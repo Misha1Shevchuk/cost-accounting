@@ -3,8 +3,8 @@ const state = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
 const { startedMessage, showStatistic, goOn } = require("../responses/typical");
-const spend = require("../responses/spends");
-const earning = require("../responses/earnings");
+const spend = require("../responses/expense");
+const earning = require("../responses/income");
 const statistic = require("../helpers/statistic");
 require("dotenv").config();
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
@@ -21,20 +21,35 @@ const handlePostback = async (sender_psid, received_postback) => {
       setTimeout(() => {
         callSendAPI(sender_psid, startedMessage(sender_psid));
       }, 1000);
-      response = { text: `Hello ${userData.first_name}!` };
+      response = {
+        text:
+          "Hello " +
+          userData.first_name +
+          "!\nI'm MoneyCounterBot. I'll manage your money.\nHow can I help you?",
+        quick_replies: [
+          {
+            type: "text",
+            title: "Expense",
+            payload: "<ADD_SPEND>"
+          },
+          {
+            type: "text",
+            title: "Income",
+            payload: "<ADD_INCOME>"
+          }
+        ]
+      };
       break;
     case "<ADD_SPEND>":
       response = spend.selectCategory;
       await state.clear(sender_psid);
       await state.add(sender_psid);
       break;
-
-    // Add Earning
-    case "<ADD_EARNING>":
+    case "<ADD_INCOME>":
       response = earning.enterAmount;
       await state.clear(sender_psid);
       await state.add(sender_psid);
-      await state.update(sender_psid, { category: "earning" });
+      await state.update(sender_psid, { category: "income" });
       break;
 
     case "<SHOW_STATISTIC>":
@@ -42,13 +57,16 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     // Statistic
     case "<STATISTIC_DAY>":
-      response = goOn(await statistic.Day(sender_psid));
+      response = goOn(await statistic.day(sender_psid));
       break;
     case "<STATISTIC_WEEK>":
-      response = goOn(await statistic.Week(sender_psid));
+      response = goOn(await statistic.week(sender_psid));
       break;
     case "<STATISTIC_MONTH>":
-      response = goOn(await statistic.Month(sender_psid));
+      response = goOn(await statistic.month(sender_psid));
+      break;
+    case "<STATISTIC_ALL_TIME>":
+      response = goOn(await statistic.allTime(sender_psid));
       break;
 
     default:

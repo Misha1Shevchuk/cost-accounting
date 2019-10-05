@@ -79,6 +79,11 @@ const addPersistentMenu = PAGE_ACCESS_TOKEN => {
                 type: "postback",
                 title: "This month",
                 payload: "<STATISTIC_MONTH>"
+              },
+              {
+                content_type: "text",
+                title: "All time",
+                payload: "<STATISTIC_ALL_TIME>"
               }
             ]
           }

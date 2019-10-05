@@ -42,7 +42,7 @@ const selectCategory = {
 };
 
 const enterAmount = {
-  text: `Type or select amount:`,
+  text: "Type or select amount:",
   quick_replies: [
     {
       content_type: "text",
