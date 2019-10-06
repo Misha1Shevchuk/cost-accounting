@@ -81,7 +81,7 @@ const showStatistic = {
 };
 
 const goOn = statistic => {
-  response = {
+  let response = {
     text: statistic,
     quick_replies: [
       {
@@ -90,17 +90,17 @@ const goOn = statistic => {
         payload: "<STARTED_MESSAGE>"
       },
       {
-        type: "text",
+        content_type: "text",
         title: "Today",
         payload: "<STATISTIC_DAY>"
       },
       {
-        type: "text",
+        content_type: "text",
         title: "This week",
         payload: "<STATISTIC_WEEK>"
       },
       {
-        type: "text",
+        content_type: "text",
         title: "This month",
         payload: "<STATISTIC_MONTH>"
       },

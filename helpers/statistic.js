@@ -3,30 +3,40 @@ const cost = require("../services/cost");
 let responseText = "";
 
 const day = async sender_psid => {
-  var now = new Date();
-  var currentDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const time = new Date();
+  time.setHours(0);
+  time.setMinutes(0);
+  time.setSeconds(0);
+  time.setMilliseconds(0);
 
   let statisticDay = toStatisticModel(
-    await cost.getStatistic(sender_psid, currentDay)
+    await cost.getStatistic(sender_psid, time)
   );
   responseText = toFormStatisticMessage(statisticDay, "today");
   return responseText;
 };
 
 const week = async sender_psid => {
-  var now = new Date();
-  var dateOfStartWeek = new Date();
-  dateOfStartWeek.setDate(now.getDate() - now.getDay());
+  let time = new Date();
+  time.setHours(0);
+  time.setMinutes(0);
+  time.setSeconds(0);
+  time.setMilliseconds(0);
+  time.getDay() === 0
+    ? time.setDate(time.getDate() - 6)
+    : time.setDate(time.getDate() - time.getDay());
   let statisticWeek = toStatisticModel(
-    await cost.getStatistic(sender_psid, dateOfStartWeek)
+    await cost.getStatistic(sender_psid, time)
   );
   responseText = toFormStatisticMessage(statisticWeek, "this week");
+
   return responseText;
 };
 
 const month = async sender_psid => {
-  var now = new Date();
-  var currentMonth = new Date(now.getFullYear(), now.getMonth());
+  const now = new Date();
+  let currentMonth = new Date(now.getFullYear(), now.getMonth());
+
   let statisticMonth = toStatisticModel(
     await cost.getStatistic(sender_psid, currentMonth)
   );
@@ -35,25 +45,26 @@ const month = async sender_psid => {
 };
 
 const allTime = async sender_psid => {
-  var date = new Date(1970);
-  let statisticMonth = toStatisticModel(
+  let date = new Date(1970);
+  let statisticAllTime = toStatisticModel(
     await cost.getStatistic(sender_psid, date)
   );
-  responseText = toFormStatisticMessage(statisticMonth, "all time");
+  responseText = toFormStatisticMessage(statisticAllTime, "all time");
   return responseText;
 };
 
 const toFormStatisticMessage = (statistic, periodOfTime) => {
   if (statistic.total_spends === 0 && statistic.earning === 0) {
-    responseText = "First add any expend or income";
+    responseText = "First add any expense or income";
   } else {
     responseText = `statistic for ${periodOfTime}:`;
     statistic.spends.forEach(spend => {
       responseText += "\n" + spend.category + ": " + spend.sum;
     });
     responseText += "\ntotal: " + statistic.total_spends;
-    if (statistic.earning) responseText += "\n\nearning: " + statistic.earning;
+    if (statistic.earning) responseText += "\n\nincome: " + statistic.earning;
   }
+
   return responseText;
 };
 
