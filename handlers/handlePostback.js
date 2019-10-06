@@ -22,9 +22,6 @@ const handlePostback = async (sender_psid, received_postback) => {
     case "<GET_STARTED_PAYLOAD>":
       let userData = await getUserData(sender_psid, PAGE_ACCESS_TOKEN);
       if (!(await getUser(sender_psid))) addNewUser(sender_psid, userData);
-      setTimeout(() => {
-        callSendAPI(sender_psid, startedMessage(sender_psid));
-      }, 1000);
       response = {
         text:
           "Hello " +
@@ -32,17 +29,19 @@ const handlePostback = async (sender_psid, received_postback) => {
           "!\nI'm MoneyCounterBot. I'll manage your money.\nHow can I help you?",
         quick_replies: [
           {
-            type: "text",
+            content_type: "text",
             title: "Expense",
             payload: "<ADD_SPEND>"
           },
           {
-            type: "text",
+            content_type: "text",
             title: "Income",
             payload: "<ADD_INCOME>"
           }
         ]
       };
+      console.log(response);
+
       break;
     case "<ADD_SPEND>":
       response = spend.selectCategory;
