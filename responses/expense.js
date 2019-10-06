@@ -89,11 +89,11 @@ const enterDescription = {
 };
 
 const saveSpend = {
-  text: "Save it?",
+  text: "Save expense?",
   quick_replies: [
     {
       content_type: "text",
-      title: "Save expense",
+      title: "Save it",
       payload: "<SAVE_COST>"
     },
     {

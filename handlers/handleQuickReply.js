@@ -1,7 +1,7 @@
 const state = require("../services/state");
 const { addNewCost } = require("../services/cost");
 const callSendAPI = require("../controllers/callSendAPI");
-const { startedMessage, goOn } = require("../responses/typical");
+const { startedMessage, showStatistic } = require("../responses/typical");
 const category = require("../helpers/categoriesEnum");
 const expense = require("../responses/expense");
 const income = require("../responses/income");
@@ -22,7 +22,7 @@ const handlePostback = async (sender_psid, received_quickReply) => {
         response = earning.enterAmount;
         await state.clear(sender_psid);
         await state.add(sender_psid);
-        await state.update(sender_psid, { category: "income" });
+        await state.update(sender_psid, { category: "Income" });
         break;
 
       // Categories:
@@ -119,16 +119,16 @@ const handlePostback = async (sender_psid, received_quickReply) => {
 
       // Statistic
       case "<STATISTIC_DAY>":
-        response = goOn(await statistic.day(sender_psid));
+        response = showStatistic(await statistic.day(sender_psid));
         break;
       case "<STATISTIC_WEEK>":
-        response = goOn(await statistic.week(sender_psid));
+        response = showStatistic(await statistic.week(sender_psid));
         break;
       case "<STATISTIC_MONTH>":
-        response = goOn(await statistic.month(sender_psid));
+        response = showStatistic(await statistic.month(sender_psid));
         break;
       case "<STATISTIC_ALL_TIME>":
-        response = goOn(await statistic.allTime(sender_psid));
+        response = showStatistic(await statistic.allTime(sender_psid));
         break;
 
       // Show started message

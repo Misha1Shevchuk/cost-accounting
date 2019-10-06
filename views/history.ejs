@@ -49,18 +49,41 @@
     <ul class="history_list">
         <% for(var i=0; i<data.length;i++) {%>
         <li class="history_list_item" id=<%="li_"+data[i]._id%>>
-            <div class="cost_info">
-                <p class="date"><b>Date: </b>
-                    <%=data[i].date.getDate() + "." + data[i].date.getMonth() + "." + data[i].date.getFullYear()%>
-                </p>
-                <p class="amount"><b>Amount: </b><%=data[i].amount%></p>
-                <% if(data[i].description !== "skipped") {%>
-                <p class="description"><b>Description: </b><%=data[i].description%></p>
-                <% }%>
-                <p class="category"><b>Category: </b><%=data[i].category%></p>
-            </div>
+            <div class="item_header">
+                <div class="date_category">
+                    <p class="date">
+                        <% if(data[i].date.getDay() === 0) { %>
+                        Sunday,
+                        <%} else if(data[i].date.getDay() === 1) {%>
+                        Monday,
+                        <%} else if(data[i].date.getDay() === 2) {%>
+                        Tuesday,
+                        <%} else if(data[i].date.getDay() === 3) {%>
+                        Wednesday,
+                        <%} else if(data[i].date.getDay() === 4) {%>
+                        Thursday,
+                        <%} else if(data[i].date.getDay() === 5) {%>
+                        Friday,
+                        <%} else if(data[i].date.getDay() === 6) {%>
+                        Saturday,
+                        <%}%>
+                        <%=data[i].date.getDate() + "." + data[i].date.getMonth() + "." + data[i].date.getFullYear()%>
+                    </p>
+                    <p class="category"><%=data[i].category%></p>
 
-            <button class="btn" id=<%="del_"+data[i]._id%> onclick="deleteItem(this)">delete</button>
+                </div>
+                <div></div>
+                <% if(data[i].category === "Income") {%>
+                <p class="amount green"><%=data[i].amount.toFixed(2)%></p>
+                <% } else {%>
+                <p class="amount"><%=data[i].amount.toFixed(2)%></p>
+                <% } %>
+                <button class="btn" id=<%="del_"+data[i]._id%> onclick="deleteItem(this)">×</button>
+            </div>
+            <% if(data[i].description !== "skipped") {%>
+            <p class="description"><%=data[i].description%></p>
+            <% }%>
+
         </li>
         <% }%>
     </ul>

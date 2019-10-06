@@ -53,13 +53,13 @@ const addPersistentMenu = PAGE_ACCESS_TOKEN => {
         call_to_actions: [
           {
             type: "postback",
-            title: "New spend",
-            payload: "<ADD_SPEND>"
+            title: "New expense",
+            payload: "<ADD_EXPENSE>"
           },
           {
             type: "postback",
-            title: "New earning",
-            payload: "<ADD_EARNING>"
+            title: "New income",
+            payload: "<ADD_IMCOME>"
           },
           {
             title: "Show statistic",
@@ -81,7 +81,7 @@ const addPersistentMenu = PAGE_ACCESS_TOKEN => {
                 payload: "<STATISTIC_MONTH>"
               },
               {
-                content_type: "text",
+                type: "postback",
                 title: "All time",
                 payload: "<STATISTIC_ALL_TIME>"
               }
@@ -96,7 +96,10 @@ const addPersistentMenu = PAGE_ACCESS_TOKEN => {
       `https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
       data
     )
-    .catch(err => err);
+    .then(data => data)
+    .catch(err => {
+      throw err;
+    });
 };
 
 // sender action

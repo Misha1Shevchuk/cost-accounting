@@ -13,24 +13,41 @@
 }
 
 .history_list_item {
+  display: block;
   border-radius: 10px;
   background-color: #fff;
   margin: 4px 0;
   padding: 5px 8px;
   width: 100%;
+}
+
+.item_header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
 }
 
-.cost_info {
-  max-width: 80%;
+.date_category {
+  width: 40%;
+  padding-bottom: 3px;
+}
+.date {
+  font-size: 0.9em;
 }
 
+.category {
+  font-size: 0.8em;
+  color: grey;
+}
+.amount {
+  width: 30%;
+  text-align: right;
+  padding-top: 5px;
+  font-weight: bold;
+}
+
+.amount.green {
+  color: green;
+}
 .description {
   max-width: 100%;
   word-wrap: break-word;
@@ -38,19 +55,23 @@
 
 .btn {
   display: block;
+  height: max-content;
   border: none;
-  background-color: #367bd4;
-  color: #fff;
-  padding: 7px 12px;
-  margin-right: 5px;
-  font-size: 1em;
-  transition: background-color 0.2s linear;
+  margin-right: 4px;
+  background-color: transparent;
+  font-size: 1.3em;
+  color: silver;
+  transition: color 0.2s linear;
   outline: none;
   user-select: none;
   border-radius: 20px;
+  -webkit-transition: color 0.2s linear;
+  -moz-transition: color 0.2s linear;
+  -ms-transition: color 0.2s linear;
+  -o-transition: color 0.2s linear;
 }
 
 .btn:hover {
   cursor: pointer;
-  background-color: #1b47d8;
+  color: grey;
 }

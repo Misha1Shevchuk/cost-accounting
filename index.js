@@ -10,8 +10,7 @@ const routerMessages = require("./routes/routeMessages");
 const routerWebview = require("./routes/routeWebview");
 const {
   addGetStartedButton,
-  addPersistentMenu,
-  addUrlToWhiteList
+  addPersistentMenu
 } = require("./helpers/requests");
 
 // Import variables from .env
@@ -24,7 +23,7 @@ const server = app.listen(process.env.PORT || 1337, () =>
 );
 
 // addGetStartedButton(PAGE_ACCESS_TOKEN);
-// addPersistentMenu(PAGE_ACCESS_TOKEN);
+addPersistentMenu(PAGE_ACCESS_TOKEN);
 
 // Routes
 app.use("/api/messages", routerMessages);

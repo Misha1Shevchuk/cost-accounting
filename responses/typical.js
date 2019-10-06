@@ -54,7 +54,7 @@ const startedMessage = sender_psid => {
   return response;
 };
 
-const showStatistic = {
+const selectPeriodStatistic = {
   text: "For which period?",
   quick_replies: [
     {
@@ -80,7 +80,7 @@ const showStatistic = {
   ]
 };
 
-const goOn = statistic => {
+const showStatistic = statistic => {
   let response = {
     text: statistic,
     quick_replies: [
@@ -114,4 +114,4 @@ const goOn = statistic => {
   return response;
 };
 
-module.exports = { startedMessage, showStatistic, goOn };
+module.exports = { startedMessage, selectPeriodStatistic, showStatistic };

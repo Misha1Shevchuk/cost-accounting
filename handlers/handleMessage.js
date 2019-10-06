@@ -18,24 +18,24 @@ const handleMessage = async (sender_psid, received_message) => {
       // If user entered amount
     } else if (userState.category && !userState.amount) {
       if (!isNaN(Number(received_message)) && Number(received_message) > 0) {
-        userState.category !== "income"
+        userState.category !== "Income"
           ? (response = expense.enterDescription)
           : (response = income.enterDescription);
         state.update(sender_psid, { amount: Number(received_message) });
       } else {
-        userState.category !== "income"
+        userState.category !== "Income"
           ? (response = expense.enterAmount)
           : (response = income.enterAmount);
       }
 
       // If user entered description
     } else if (userState.amount && !userState.description) {
-      userState.category !== "income"
+      userState.category !== "Income"
         ? (response = expense.saveSpend)
         : (response = income.saveEarning);
       await state.update(sender_psid, { description: received_message });
     } else if (userState.description) {
-      userState.category !== "income"
+      userState.category !== "Income"
         ? (response = expense.saveSpend)
         : (response = income.saveEarning);
 

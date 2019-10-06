@@ -62,7 +62,7 @@ const toFormStatisticMessage = (statistic, periodOfTime) => {
       responseText += "\n" + spend.category + ": " + spend.sum;
     });
     responseText += "\ntotal: " + statistic.total_spends;
-    if (statistic.earning) responseText += "\n\nincome: " + statistic.earning;
+    if (statistic.earning) responseText += "\n\nIncome: " + statistic.earning;
   }
 
   return responseText;
@@ -76,7 +76,7 @@ const toStatisticModel = costs => {
   };
 
   costs.forEach(cost => {
-    if (cost._id === "income") {
+    if (cost._id === "Income") {
       statisticModel.earning = cost.sum;
     } else {
       statisticModel.spends.push({ category: cost._id, sum: cost.sum });

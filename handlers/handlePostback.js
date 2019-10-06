@@ -2,7 +2,11 @@ const { getUserData } = require("../helpers/requests");
 const state = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
-const { startedMessage, showStatistic, goOn } = require("../responses/typical");
+const {
+  startedMessage,
+  selectPeriodStatistic,
+  showStatistic
+} = require("../responses/typical");
 const spend = require("../responses/expense");
 const earning = require("../responses/income");
 const statistic = require("../helpers/statistic");
@@ -49,24 +53,24 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = earning.enterAmount;
       await state.clear(sender_psid);
       await state.add(sender_psid);
-      await state.update(sender_psid, { category: "income" });
+      await state.update(sender_psid, { category: "Income" });
       break;
 
     case "<SHOW_STATISTIC>":
-      response = showStatistic;
+      response = selectPeriodStatistic;
       break;
     // Statistic
     case "<STATISTIC_DAY>":
-      response = goOn(await statistic.day(sender_psid));
+      response = showStatistic(await statistic.day(sender_psid));
       break;
     case "<STATISTIC_WEEK>":
-      response = goOn(await statistic.week(sender_psid));
+      response = showStatistic(await statistic.week(sender_psid));
       break;
     case "<STATISTIC_MONTH>":
-      response = goOn(await statistic.month(sender_psid));
+      response = showStatistic(await statistic.month(sender_psid));
       break;
     case "<STATISTIC_ALL_TIME>":
-      response = goOn(await statistic.allTime(sender_psid));
+      response = showStatistic(await statistic.allTime(sender_psid));
       break;
 
     default:

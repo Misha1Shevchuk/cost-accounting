@@ -1,4 +1,4 @@
-const enterAmount = { text: "Type profit:" };
+const enterAmount = { text: "Type amount:" };
 
 const enterDescription = {
   text: "Write description: ",
@@ -17,11 +17,11 @@ const enterDescription = {
 };
 
 const saveEarning = {
-  text: "Save it?",
+  text: "Save earning?",
   quick_replies: [
     {
       content_type: "text",
-      title: "Save profit",
+      title: "Save it",
       payload: "<SAVE_COST>"
     },
     {
