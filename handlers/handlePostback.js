@@ -10,7 +10,6 @@ const {
 const spend = require("../responses/expense");
 const earning = require("../responses/income");
 const statistic = require("../helpers/statistic");
-require("dotenv").config();
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 const handlePostback = async (sender_psid, received_postback) => {
@@ -30,12 +29,12 @@ const handlePostback = async (sender_psid, received_postback) => {
         quick_replies: [
           {
             content_type: "text",
-            title: "Expense",
+            title: "Add expense",
             payload: "<ADD_EXPENSE>"
           },
           {
             content_type: "text",
-            title: "Income",
+            title: "Add income",
             payload: "<ADD_INCOME>"
           }
         ]

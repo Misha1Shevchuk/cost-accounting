@@ -3,12 +3,23 @@ function deleteItem(object) {
 }
 
 function sendIdItem(itemId) {
-  fetch("https://08140a7d.ngrok.io/webview", {
+  fetch("/webview", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ itemId: itemId })
   }).then(function(res) {
     if (res.ok) hideDeletedElement(itemId);
+  });
+}
+
+function searchDate() {
+  var userId = window.location.pathname.replace("/webview/", "");
+  var date = document.getElementById("date_selector").value;
+  fetch("/webview/" + userId + "/" + date, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" }
+  }).then(function(response) {
+    window.location.href = response.url;
   });
 }
 

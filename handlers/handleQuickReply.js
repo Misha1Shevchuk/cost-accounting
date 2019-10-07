@@ -13,13 +13,13 @@ const handlePostback = async (sender_psid, received_quickReply) => {
   let payload = received_quickReply.payload;
   try {
     switch (payload) {
-      case "<ADD_SPEND>":
-        response = spend.selectCategory;
+      case "<ADD_EXPENSE>":
+        response = expense.selectCategory;
         await state.clear(sender_psid);
         await state.add(sender_psid);
         break;
       case "<ADD_INCOME>":
-        response = earning.enterAmount;
+        response = income.enterAmount;
         await state.clear(sender_psid);
         await state.add(sender_psid);
         await state.update(sender_psid, { category: "Income" });

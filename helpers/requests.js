@@ -3,10 +3,7 @@ const axios = require("axios");
 const getUserData = async (sender_psid, PAGE_ACCESS_TOKEN) => {
   return await axios
     .get(
-      "https://graph.facebook.com/" +
-        sender_psid +
-        "?fields=first_name,last_name,profile_pic&access_token=" +
-        PAGE_ACCESS_TOKEN
+      `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`
     )
     .then(request => request.data);
 };

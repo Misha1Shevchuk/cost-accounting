@@ -1,9 +1,8 @@
 const handleMessage = require("../handlers/handleMessage");
 const handlePostback = require("../handlers/handlePostback");
 const handleQuickReply = require("../handlers/handleQuickReply");
-const callSendAPI = require("../controllers/callSendAPI");
+const callSendAPI = require("./callSendAPI");
 const { addSenderAction, addUrlToWhiteList } = require("../helpers/requests");
-require("dotenv").config();
 const SERVER_URL = process.env.SERVER_URL;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 

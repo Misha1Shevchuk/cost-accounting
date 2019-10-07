@@ -44,44 +44,46 @@
             });
         };
     </script>
-
-
+    <form>
+        <label for="date_selector" id="date_selector_label">Select date:</label>
+        <input type="date" id="date_selector" required value=<%=""+data.date %> >
+        <input type="button" onclick="searchDate()" value="Search"></form>
     <ul class="history_list">
-        <% for(var i=0; i<data.length;i++) {%>
-        <li class="history_list_item" id=<%="li_"+data[i]._id%>>
+        <% for(var i=0; i<data.history.length;i++) {%>
+        <li class="history_list_item" id=<%="li_"+data.history[i]._id%>>
             <div class="item_header">
                 <div class="date_category">
                     <p class="date">
-                        <% if(data[i].date.getDay() === 0) { %>
+                        <% if(data.history[i].date.getDay() === 0) { %>
                         Sunday,
-                        <%} else if(data[i].date.getDay() === 1) {%>
+                        <%} else if(data.history[i].date.getDay() === 1) {%>
                         Monday,
-                        <%} else if(data[i].date.getDay() === 2) {%>
+                        <%} else if(data.history[i].date.getDay() === 2) {%>
                         Tuesday,
-                        <%} else if(data[i].date.getDay() === 3) {%>
+                        <%} else if(data.history[i].date.getDay() === 3) {%>
                         Wednesday,
-                        <%} else if(data[i].date.getDay() === 4) {%>
+                        <%} else if(data.history[i].date.getDay() === 4) {%>
                         Thursday,
-                        <%} else if(data[i].date.getDay() === 5) {%>
+                        <%} else if(data.history[i].date.getDay() === 5) {%>
                         Friday,
-                        <%} else if(data[i].date.getDay() === 6) {%>
+                        <%} else if(data.history[i].date.getDay() === 6) {%>
                         Saturday,
                         <%}%>
-                        <%=data[i].date.getDate() + "." + data[i].date.getMonth() + "." + data[i].date.getFullYear()%>
+                        <%=data.history[i].date.getDate() + "." + data.history[i].date.getMonth() + "." + data.history[i].date.getFullYear()%>
                     </p>
-                    <p class="category"><%=data[i].category%></p>
+                    <p class="category"><%=data.history[i].category%></p>
 
                 </div>
                 <div></div>
-                <% if(data[i].category === "Income") {%>
-                <p class="amount green"><%=data[i].amount.toFixed(2)%></p>
+                <% if(data.history[i].category === "Income") {%>
+                <p class="amount green"><%=data.history[i].amount%></p>
                 <% } else {%>
-                <p class="amount"><%=data[i].amount.toFixed(2)%></p>
+                <p class="amount"><%=data.history[i].amount%></p>
                 <% } %>
-                <button class="btn" id=<%="del_"+data[i]._id%> onclick="deleteItem(this)">×</button>
+                <button class="btn" id=<%="del_"+data.history[i]._id%> onclick="deleteItem(this)">×</button>
             </div>
-            <% if(data[i].description !== "skipped") {%>
-            <p class="description"><%=data[i].description%></p>
+            <% if(data.history[i].description !== "skipped") {%>
+            <p class="description"><%=data.history[i].description%></p>
             <% }%>
 
         </li>

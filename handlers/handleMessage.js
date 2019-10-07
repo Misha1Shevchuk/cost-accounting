@@ -14,13 +14,13 @@ const handleMessage = async (sender_psid, received_message) => {
     if (received_message.toLowerCase() === "test") {
       state.clear(sender_psid);
       response = startedMessage(sender_psid);
-
       // If user entered amount
     } else if (userState.category && !userState.amount) {
       if (!isNaN(Number(received_message)) && Number(received_message) > 0) {
         userState.category !== "Income"
           ? (response = expense.enterDescription)
           : (response = income.enterDescription);
+
         state.update(sender_psid, { amount: Number(received_message) });
       } else {
         userState.category !== "Income"

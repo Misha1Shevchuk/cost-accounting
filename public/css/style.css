@@ -7,6 +7,14 @@
   font-family: "Ubuntu", sans-serif;
 }
 
+#date_selector {
+  margin: 10px 0;
+}
+
+#date_selector_label {
+  margin: 0 20px;
+}
+
 .history_list {
   background-color: #eeecec;
   min-height: 100vh;

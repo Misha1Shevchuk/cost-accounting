@@ -1,4 +1,3 @@
-require("dotenv").config();
 SERVER_URL = process.env.SERVER_URL;
 
 const startedMessage = sender_psid => {
@@ -17,7 +16,7 @@ const startedMessage = sender_psid => {
               {
                 type: "postback",
                 title: "Expense",
-                payload: "<ADD_SPEND>"
+                payload: "<ADD_EXPENSE>"
               },
               {
                 type: "postback",
@@ -86,7 +85,7 @@ const showStatistic = statistic => {
     quick_replies: [
       {
         content_type: "text",
-        title: "Go on!",
+        title: "Go to menu",
         payload: "<STARTED_MESSAGE>"
       },
       {
