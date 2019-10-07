@@ -1,117 +1,55 @@
 const category = require("../helpers/categoriesEnum");
+const formMessage = require("../helpers/formMessages");
 
-const selectCategory = {
-  text: "Select category",
-  quick_replies: [
-    {
-      content_type: "text",
-      title: category.TRANSPORT,
-      payload: "<TRANSPORT>"
-    },
-    {
-      content_type: "text",
-      title: category.FOOD,
-      payload: "<FOOD>"
-    },
-    {
-      content_type: "text",
-      title: category.ENTERTAINMENT,
-      payload: "<ENTERTAINMENT>"
-    },
-    {
-      content_type: "text",
-      title: category.BEAUTY_AND_HEALTH,
-      payload: "<BEAUTY_AND_HEALTH>"
-    },
-    {
-      content_type: "text",
-      title: category.CLOTHES,
-      payload: "<CLOTHES>"
-    },
-    {
-      content_type: "text",
-      title: category.UTILITES,
-      payload: "<UTILITES>"
-    },
-    {
-      content_type: "text",
-      title: category.OTHER,
-      payload: "<OTHER>"
-    }
-  ]
+const selectCategory = () => {
+  const text = "Select category";
+  let quickReplies = [
+    { title: category.TRANSPORT, payload: "<TRANSPORT>" },
+    { title: category.FOOD, payload: "<FOOD>" },
+    { title: category.ENTERTAINMENT, payload: "<ENTERTAINMENT>" },
+    { title: category.BEAUTY_AND_HEALTH, payload: "<BEAUTY_AND_HEALTH>" },
+    { title: category.CLOTHES, payload: "<CLOTHES>" },
+    { title: category.UTILITES, payload: "<UTILITES>" },
+    { title: category.OTHER, payload: "<OTHER>" }
+  ];
+  return formMessage.formQuickReplies(text, quickReplies);
 };
 
-const enterAmount = {
-  text: "Type or select amount:",
-  quick_replies: [
-    {
-      content_type: "text",
-      title: "50",
-      payload: "<AMOUNT_50>"
-    },
-    {
-      content_type: "text",
-      title: "100",
-      payload: "<AMOUNT_100>"
-    },
-    {
-      content_type: "text",
-      title: "200",
-      payload: "<AMOUNT_200>"
-    },
-    {
-      content_type: "text",
-      title: "Change category",
-      payload: "<GO_BACK_TO_CATEGORIES>"
-    }
-  ]
+const enterAmount = () => {
+  const text = "Type or select amount:";
+  let quickReplies = [
+    { title: "50", payload: "<AMOUNT_50>" },
+    { title: "100", payload: "<AMOUNT_100>" },
+    { title: "200", payload: "<AMOUNT_200>" },
+    { title: "Change category", payload: "<GO_BACK_TO_CATEGORIES>" }
+  ];
+  return formMessage.formQuickReplies(text, quickReplies);
 };
 
-const enterDescription = {
-  text: "Write description: ",
-  quick_replies: [
-    {
-      content_type: "text",
-      title: "Skip",
-      payload: "<SKIP_DESCRIPTION>"
-    },
-    {
-      content_type: "text",
-      title: "Change amount",
-      payload: "<GO_BACK_TO_AMOUNT>"
-    },
-    {
-      content_type: "text",
-      title: "Change category",
-      payload: "<GO_BACK_TO_CATEGORIES>"
-    }
-  ]
+const enterDescription = () => {
+  const text = "Write description:";
+  let quickReplies = [
+    { title: "Skip", payload: "<SKIP_DESCRIPTION>" },
+    { title: "Change amount", payload: "<GO_BACK_TO_AMOUNT>" },
+    { title: "Change category", payload: "<GO_BACK_TO_CATEGORIES>" }
+  ];
+  return formMessage.formQuickReplies(text, quickReplies);
 };
 
-const saveSpend = {
-  text: "Save expense?",
-  quick_replies: [
-    {
-      content_type: "text",
-      title: "Save it",
-      payload: "<SAVE_COST>"
-    },
-    {
-      content_type: "text",
-      title: "Change description",
-      payload: "<GO_BACK_TO_DESCRIPTION>"
-    },
-    {
-      content_type: "text",
-      title: "Change amount",
-      payload: "<GO_BACK_TO_AMOUNT>"
-    },
-    {
-      content_type: "text",
-      title: "Change category",
-      payload: "<GO_BACK_TO_CATEGORIES>"
-    }
-  ]
+const saveExpense = () => {
+  const text = "Save expense?";
+  let quickReplies = [
+    { title: "Save it", payload: "<SAVE_COST>" },
+    { title: "Change description", payload: "<GO_BACK_TO_DESCRIPTION>" },
+    { title: "Change amount", payload: "<GO_BACK_TO_AMOUNT>" },
+    { title: "Change category", payload: "<GO_BACK_TO_CATEGORIES>" }
+  ];
+  return formMessage.formQuickReplies(text, quickReplies);
 };
 
-module.exports = { saveSpend, enterAmount, enterDescription, selectCategory };
+module.exports = {
+  saveExpense,
+  enterAmount,
+  enterDescription,
+  selectCategory
+};

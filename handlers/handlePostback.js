@@ -3,13 +3,14 @@ const state = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
 const callSendAPI = require("../controllers/callSendAPI");
 const {
-  startedMessage,
+  getStartedMessage,
   selectPeriodStatistic,
   showStatistic
 } = require("../responses/typical");
 const spend = require("../responses/expense");
 const earning = require("../responses/income");
 const statistic = require("../helpers/statistic");
+const formMessage = require("../helpers/formMessages");
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 const handlePostback = async (sender_psid, received_postback) => {
@@ -21,39 +22,22 @@ const handlePostback = async (sender_psid, received_postback) => {
     case "<GET_STARTED_PAYLOAD>":
       let userData = await getUserData(sender_psid, PAGE_ACCESS_TOKEN);
       if (!(await getUser(sender_psid))) addNewUser(sender_psid, userData);
-      response = {
-        text:
-          "Hello " +
-          userData.first_name +
-          "!\nI'm MoneyCounterBot. I'll manage your money.\nHow can I help you?",
-        quick_replies: [
-          {
-            content_type: "text",
-            title: "Add expense",
-            payload: "<ADD_EXPENSE>"
-          },
-          {
-            content_type: "text",
-            title: "Add income",
-            payload: "<ADD_INCOME>"
-          }
-        ]
-      };
+      response = getStartedMessage();
       break;
     case "<ADD_EXPENSE>":
-      response = spend.selectCategory;
+      response = spend.selectCategory();
       await state.clear(sender_psid);
       await state.add(sender_psid);
       break;
     case "<ADD_INCOME>":
-      response = earning.enterAmount;
+      response = earning.enterAmount();
       await state.clear(sender_psid);
       await state.add(sender_psid);
       await state.update(sender_psid, { category: "Income" });
       break;
 
     case "<SHOW_STATISTIC>":
-      response = selectPeriodStatistic;
+      response = selectPeriodStatistic();
       break;
     // Statistic
     case "<STATISTIC_DAY>":

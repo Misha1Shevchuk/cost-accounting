@@ -1,7 +1,7 @@
 const state = require("../services/state");
 const { addNewCost } = require("../services/cost");
 const callSendAPI = require("../controllers/callSendAPI");
-const { startedMessage, showStatistic } = require("../responses/typical");
+const { showMenu, showStatistic } = require("../responses/typical");
 const category = require("../helpers/categoriesEnum");
 const expense = require("../responses/expense");
 const income = require("../responses/income");
@@ -27,63 +27,65 @@ const handlePostback = async (sender_psid, received_quickReply) => {
 
       // Categories:
       case "<TRANSPORT>":
-        response = expense.enterAmount;
+        response = expense.enterAmount();
         state.update(sender_psid, { category: category.TRANSPORT });
         break;
       case "<ENTERTAINMENT>":
-        response = expense.enterAmount;
+        response = expense.enterAmount();
         state.update(sender_psid, { category: category.ENTERTAINMENT });
         break;
       case "<CLOTHES>":
-        response = expense.enterAmount;
+        response = expense.enterAmount();
         state.update(sender_psid, { category: category.CLOTHES });
         break;
       case "<FOOD>":
-        response = expense.enterAmount;
+        response = expense.enterAmount();
         state.update(sender_psid, { category: category.FOOD });
         break;
       case "<BEAUTY_AND_HEALTH>":
-        response = expense.enterAmount;
+        response = expense.enterAmount();
         state.update(sender_psid, {
           category: category.BEAUTY_AND_HEALTH
         });
         break;
       case "<UTILITES>":
-        response = expense.enterAmount;
+        response = expense.enterAmount();
         state.update(sender_psid, { category: category.UTILITES });
         break;
       case "<OTHER>":
-        response = expense.enterAmount;
+        response = expense.enterAmount();
         state.update(sender_psid, { category: category.OTHER });
         break;
 
       // Amount
       case "<AMOUNT_50>":
-        response = expense.enterDescription;
+        response = expense.enterDescription();
         state.update(sender_psid, { amount: 50 });
         break;
       case "<AMOUNT_100>":
-        response = expense.enterDescription;
+        response = expense.enterDescription();
         state.update(sender_psid, { amount: 100 });
         break;
       case "<AMOUNT_200>":
-        response = expense.enterDescription;
+        response = expense.enterDescription();
         state.update(sender_psid, { amount: 200 });
         break;
 
       // Skip description
       case "<SKIP_DESCRIPTION>":
-        response = expense.saveSpend;
+        response = expense.saveExpense();
         await state.update(sender_psid, { description: "skipped" });
         break;
       case "<INCOME_SKIP_DESCRIPTION>":
-        response = income.saveEarning;
+        response = income.saveIncome();
         await state.update(sender_psid, { description: "skipped" });
         break;
 
       // Change
       case "<GO_BACK_TO_CATEGORIES>":
-        response = expense.selectCategory;
+        response = expense.selectCategory();
+        console.log(response);
+
         state.update(sender_psid, {
           category: null,
           amount: null,
@@ -91,27 +93,27 @@ const handlePostback = async (sender_psid, received_quickReply) => {
         });
         break;
       case "<GO_BACK_TO_AMOUNT>":
-        response = expense.enterAmount;
+        response = expense.enterAmount();
         state.update(sender_psid, { amount: null, description: null });
         break;
       case "<GO_BACK_TO_DESCRIPTION>":
-        response = expense.enterDescription;
+        response = expense.enterDescription();
         state.update(sender_psid, { description: null });
         break;
 
       // Change earning
       case "<INCOME_GO_BACK_TO_AMOUNT>":
-        response = income.enterAmount;
+        response = income.enterAmount();
         state.update(sender_psid, { amount: null, description: null });
         break;
       case "<INCOME_GO_BACK_TO_DESCRIPTION>":
-        response = income.enterDescription;
+        response = income.enterDescription();
         state.update(sender_psid, { description: null });
         break;
 
       // Save spend or earning
       case "<SAVE_COST>":
-        response = startedMessage(sender_psid);
+        response = showMenu(sender_psid);
         await addNewCost(sender_psid, await state.get(sender_psid));
         callSendAPI(sender_psid, { text: "Saved" });
         state.clear(sender_psid);
@@ -132,8 +134,8 @@ const handlePostback = async (sender_psid, received_quickReply) => {
         break;
 
       // Show started message
-      case "<STARTED_MESSAGE>":
-        response = startedMessage(sender_psid);
+      case "<SHOW_MENU>":
+        response = showMenu(sender_psid);
         break;
 
       default:

@@ -1,6 +1,15 @@
 SERVER_URL = process.env.SERVER_URL;
 
-const startedMessage = sender_psid => {
+const getStartedMessage = () => {
+  const text = `Hello ${userData.first_name}! I'm MoneyCounterBot. I'll manage your money. How can I help you?`;
+  const quickReplies = [
+    { title: "Add expense", payload: "<ADD_EXPENSE>" },
+    { title: "Add income", payload: "<ADD_INCOME>" }
+  ];
+  return formMessage.formQuickReplies(text, quickReplies);
+};
+
+const showMenu = sender_psid => {
   let response = {
     attachment: {
       type: "template",
@@ -53,64 +62,32 @@ const startedMessage = sender_psid => {
   return response;
 };
 
-const selectPeriodStatistic = {
-  text: "For which period?",
-  quick_replies: [
-    {
-      content_type: "text",
-      title: "Today",
-      payload: "<STATISTIC_DAY>"
-    },
-    {
-      content_type: "text",
-      title: "This week",
-      payload: "<STATISTIC_WEEK>"
-    },
-    {
-      content_type: "text",
-      title: "This month",
-      payload: "<STATISTIC_MONTH>"
-    },
-    {
-      content_type: "text",
-      title: "All time",
-      payload: "<STATISTIC_ALL_TIME>"
-    }
-  ]
+const selectPeriodStatistic = () => {
+  const text = "For which period?";
+  const quickReplies = [
+    { title: "Today", payload: "<STATISTIC_DAY>" },
+    { title: "This week", payload: "<STATISTIC_WEEK>" },
+    { title: "This month", payload: "<STATISTIC_MONTH>" },
+    { title: "All time", payload: "<STATISTIC_ALL_TIME>" }
+  ];
+  return formMessage.formQuickReplies(text, quickReplies);
 };
 
 const showStatistic = statistic => {
-  let response = {
-    text: statistic,
-    quick_replies: [
-      {
-        content_type: "text",
-        title: "Go to menu",
-        payload: "<STARTED_MESSAGE>"
-      },
-      {
-        content_type: "text",
-        title: "Today",
-        payload: "<STATISTIC_DAY>"
-      },
-      {
-        content_type: "text",
-        title: "This week",
-        payload: "<STATISTIC_WEEK>"
-      },
-      {
-        content_type: "text",
-        title: "This month",
-        payload: "<STATISTIC_MONTH>"
-      },
-      {
-        content_type: "text",
-        title: "All time",
-        payload: "<STATISTIC_ALL_TIME>"
-      }
-    ]
-  };
-  return response;
+  const text = statistic;
+  const quickReplies = [
+    { title: "Go to menu", payload: "<SHOW_MENU>" },
+    { title: "Today", payload: "<STATISTIC_DAY>" },
+    { title: "This week", payload: "<STATISTIC_WEEK>" },
+    { title: "This month", payload: "<STATISTIC_MONTH>" },
+    { title: "All time", payload: "<STATISTIC_ALL_TIME>" }
+  ];
+  return formMessage.formQuickReplies(text, quickReplies);
 };
 
-module.exports = { startedMessage, selectPeriodStatistic, showStatistic };
+module.exports = {
+  getStartedMessage,
+  showMenu,
+  selectPeriodStatistic,
+  showStatistic
+};
