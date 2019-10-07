@@ -31,7 +31,7 @@ const handlePostback = async (sender_psid, received_postback) => {
           {
             content_type: "text",
             title: "Expense",
-            payload: "<ADD_SPEND>"
+            payload: "<ADD_EXPENSE>"
           },
           {
             content_type: "text",
@@ -40,10 +40,8 @@ const handlePostback = async (sender_psid, received_postback) => {
           }
         ]
       };
-      console.log(response);
-
       break;
-    case "<ADD_SPEND>":
+    case "<ADD_EXPENSE>":
       response = spend.selectCategory;
       await state.clear(sender_psid);
       await state.add(sender_psid);

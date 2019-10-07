@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <script src="/public/js/webview.js"></script>
+    <script src="/public/js/script.js"></script>
     <script>
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
@@ -87,6 +87,12 @@
         </li>
         <% }%>
     </ul>
+    <script>
+    var amounts = document.querySelectorAll(".amount");
+    amounts.forEach(function(amount){
+        amount.innerHTML = amount.innerHTML.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+    })
+    </script>
 </body>
 
 </html>

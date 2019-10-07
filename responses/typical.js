@@ -27,14 +27,14 @@ const startedMessage = sender_psid => {
             ]
           },
           {
-            title: "Statistic",
+            title: "Stats",
             subtitle: "What do you want to watch?",
             image_url:
               "https://c.pxhere.com/images/b9/27/e3c21934dcf17ccb54fdaf997f04-1584291.jpg!d",
             buttons: [
               {
                 type: "postback",
-                title: "Stats",
+                title: "Statistic",
                 payload: "<SHOW_STATISTIC>"
               },
               {

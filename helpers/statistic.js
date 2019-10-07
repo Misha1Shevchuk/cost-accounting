@@ -59,10 +59,23 @@ const toFormStatisticMessage = (statistic, periodOfTime) => {
   } else {
     responseText = `statistic for ${periodOfTime}:`;
     statistic.spends.forEach(spend => {
-      responseText += "\n" + spend.category + ": " + spend.sum;
+      responseText +=
+        "\n" +
+        spend.category +
+        ": " +
+        spend.sum.toFixed(2).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     });
-    responseText += "\ntotal: " + statistic.total_spends;
-    if (statistic.earning) responseText += "\n\nIncome: " + statistic.earning;
+    responseText +=
+      "\nTotal: " +
+      statistic.total_spends
+        .toFixed(2)
+        .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+    if (statistic.earning)
+      responseText +=
+        "\n\nIncome: " +
+        statistic.earning
+          .toFixed(2)
+          .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
   }
 
   return responseText;

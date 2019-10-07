@@ -1,11 +1,15 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu&display=swap&subset=cyrillic");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
 }
 
 .history_list {
   background-color: #eeecec;
+  min-height: 100vh;
   width: 100%;
   padding: 1px 5px;
   list-style: none;
@@ -39,7 +43,7 @@
   color: grey;
 }
 .amount {
-  width: 30%;
+  width: 40%;
   text-align: right;
   padding-top: 5px;
   font-weight: bold;

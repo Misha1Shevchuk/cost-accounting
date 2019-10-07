@@ -6,18 +6,18 @@ const enterDescription = {
     {
       content_type: "text",
       title: "Skip",
-      payload: "<EARNING_SKIP_DESCRIPTION>"
+      payload: "<INCOME_SKIP_DESCRIPTION>"
     },
     {
       content_type: "text",
       title: "Change amount",
-      payload: "<EARNING_GO_BACK_TO_AMOUNT>"
+      payload: "<INCOME_GO_BACK_TO_AMOUNT>"
     }
   ]
 };
 
-const saveEarning = {
-  text: "Save earning?",
+const saveIncome = {
+  text: "Save income?",
   quick_replies: [
     {
       content_type: "text",
@@ -27,14 +27,14 @@ const saveEarning = {
     {
       content_type: "text",
       title: "Change description",
-      payload: "<EARNING_GO_BACK_TO_DESCRIPTION>"
+      payload: "<INCOME_GO_BACK_TO_DESCRIPTION>"
     },
     {
       content_type: "text",
       title: "Change amount",
-      payload: "<EARNING_GO_BACK_TO_AMOUNT>"
+      payload: "<INCOME_GO_BACK_TO_AMOUNT>"
     }
   ]
 };
 
-module.exports = { saveEarning, enterAmount, enterDescription };
+module.exports = { saveEarning: saveIncome, enterAmount, enterDescription };

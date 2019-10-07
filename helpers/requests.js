@@ -59,7 +59,7 @@ const addPersistentMenu = PAGE_ACCESS_TOKEN => {
           {
             type: "postback",
             title: "New income",
-            payload: "<ADD_IMCOME>"
+            payload: "<ADD_INCOME>"
           },
           {
             title: "Show statistic",
