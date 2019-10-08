@@ -1,15 +1,19 @@
 const axios = require("axios");
+const { createPersistentMenu } = require("../responses/typical");
+require("dotenv").config();
+PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+SERVER_URL = process.env.SERVER_URL;
 
-const getUserData = async (sender_psid, PAGE_ACCESS_TOKEN) => {
-  return await axios
+const getUserData = senderPsid => {
+  return axios
     .get(
-      `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`
+      `https://graph.facebook.com/${senderPsid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`
     )
     .then(request => request.data);
 };
 
 // Add button "get started"
-const addGetStartedButton = PAGE_ACCESS_TOKEN => {
+const addGetStartedButton = () => {
   const data = {
     get_started: { payload: "<GET_STARTED_PAYLOAD>" },
     greeting: [
@@ -28,7 +32,7 @@ const addGetStartedButton = PAGE_ACCESS_TOKEN => {
 };
 
 // Add button "get started"
-const addUrlToWhiteList = (SERVER_URL, PAGE_ACCESS_TOKEN) => {
+const addUrlToWhiteList = () => {
   const data = {
     whitelisted_domains: [SERVER_URL]
   };
@@ -37,73 +41,27 @@ const addUrlToWhiteList = (SERVER_URL, PAGE_ACCESS_TOKEN) => {
       `https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
       data
     )
-    .catch(err => err);
+    .catch(err => console.error(err));
 };
 
 // Persistent menu
-const addPersistentMenu = PAGE_ACCESS_TOKEN => {
-  const data = {
-    persistent_menu: [
-      {
-        locale: "default",
-        composer_input_disabled: false,
-        call_to_actions: [
-          {
-            type: "postback",
-            title: "New expense",
-            payload: "<ADD_EXPENSE>"
-          },
-          {
-            type: "postback",
-            title: "New income",
-            payload: "<ADD_INCOME>"
-          },
-          {
-            title: "Show statistic",
-            type: "nested",
-            call_to_actions: [
-              {
-                type: "postback",
-                title: "Today",
-                payload: "<STATISTIC_DAY>"
-              },
-              {
-                type: "postback",
-                title: "This week",
-                payload: "<STATISTIC_WEEK>"
-              },
-              {
-                type: "postback",
-                title: "This month",
-                payload: "<STATISTIC_MONTH>"
-              },
-              {
-                type: "postback",
-                title: "All time",
-                payload: "<STATISTIC_ALL_TIME>"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  };
+const addPersistentMenu = () => {
   axios
     .post(
       `https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
-      data
+      createPersistentMenu
     )
     .then(data => data)
     .catch(err => {
-      throw err;
+      console.error(err);
     });
 };
 
 // sender action
-const addSenderAction = (sender_psid, PAGE_ACCESS_TOKEN) => {
+const addSenderAction = senderPsid => {
   const data = {
     recipient: {
-      id: sender_psid
+      id: senderPsid
     },
     sender_action: "typing_on"
   };
@@ -112,7 +70,24 @@ const addSenderAction = (sender_psid, PAGE_ACCESS_TOKEN) => {
       `https://graph.facebook.com/v2.6/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
       data
     )
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
+};
+
+const callSendAPI = async (senderPsid, response) => {
+  // Construct the message body
+  let request_body = {
+    recipient: {
+      id: senderPsid
+    },
+    message: await response
+  };
+
+  axios
+    .post(
+      `https://graph.facebook.com/v2.6/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+      request_body
+    )
+    .catch(err => console.error(err));
 };
 
 module.exports = {
@@ -120,5 +95,6 @@ module.exports = {
   addGetStartedButton,
   addSenderAction,
   addPersistentMenu,
-  addUrlToWhiteList
+  addUrlToWhiteList,
+  callSendAPI
 };

@@ -1,7 +1,6 @@
-const { getUserData } = require("../helpers/requests");
+const { getUserData, callSendAPI } = require("../helpers/requests");
 const state = require("../services/state");
 const { getUser, addNewUser } = require("../services/user");
-const callSendAPI = require("../controllers/callSendAPI");
 const {
   getStartedMessage,
   selectPeriodStatistic,
@@ -10,30 +9,28 @@ const {
 const spend = require("../responses/expense");
 const earning = require("../responses/income");
 const statistic = require("../helpers/statistic");
-const formMessage = require("../helpers/formMessages");
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
-const handlePostback = async (sender_psid, received_postback) => {
+const handlePostback = async (senderPsid, receivedPostback) => {
   // Get the payload for the postback
-  let payload = received_postback.payload;
+  let payload = receivedPostback.payload;
   let response;
 
   switch (payload) {
     case "<GET_STARTED_PAYLOAD>":
-      let userData = await getUserData(sender_psid, PAGE_ACCESS_TOKEN);
-      if (!(await getUser(sender_psid))) addNewUser(sender_psid, userData);
-      response = getStartedMessage();
+      let userData = await getUserData(senderPsid);
+      if (!(await getUser(senderPsid))) addNewUser(senderPsid, userData);
+      response = getStartedMessage(userData);
       break;
     case "<ADD_EXPENSE>":
       response = spend.selectCategory();
-      await state.clear(sender_psid);
-      await state.add(sender_psid);
+      await state.clear(senderPsid);
+      await state.add(senderPsid);
       break;
     case "<ADD_INCOME>":
       response = earning.enterAmount();
-      await state.clear(sender_psid);
-      await state.add(sender_psid);
-      await state.update(sender_psid, { category: "Income" });
+      await state.clear(senderPsid);
+      await state.add(senderPsid);
+      await state.update(senderPsid, { category: "Income" });
       break;
 
     case "<SHOW_STATISTIC>":
@@ -41,16 +38,16 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     // Statistic
     case "<STATISTIC_DAY>":
-      response = showStatistic(await statistic.day(sender_psid));
+      response = showStatistic(await statistic.day(senderPsid));
       break;
     case "<STATISTIC_WEEK>":
-      response = showStatistic(await statistic.week(sender_psid));
+      response = showStatistic(await statistic.week(senderPsid));
       break;
     case "<STATISTIC_MONTH>":
-      response = showStatistic(await statistic.month(sender_psid));
+      response = showStatistic(await statistic.month(senderPsid));
       break;
     case "<STATISTIC_ALL_TIME>":
-      response = showStatistic(await statistic.allTime(sender_psid));
+      response = showStatistic(await statistic.allTime(senderPsid));
       break;
 
     default:
@@ -60,7 +57,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
   }
   // Send the response message
-  if (response) callSendAPI(sender_psid, response);
+  if (response) callSendAPI(senderPsid, response);
 };
 
 module.exports = handlePostback;

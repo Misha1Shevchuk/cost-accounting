@@ -2,7 +2,7 @@ const cost = require("../services/cost");
 
 let responseText = "";
 
-const day = async sender_psid => {
+const day = async senderPsid => {
   const time = new Date();
   time.setHours(0);
   time.setMinutes(0);
@@ -10,7 +10,7 @@ const day = async sender_psid => {
   time.setMilliseconds(0);
 
   let statisticDay = toStatisticModel(
-    await cost.getStatistic(sender_psid, time)
+    await cost.getStatistic(senderPsid, time)
   );
   responseText = toFormStatisticMessage(statisticDay, "today");
   return responseText;
@@ -33,28 +33,28 @@ const week = async sender_psid => {
   return responseText;
 };
 
-const month = async sender_psid => {
+const month = async senderPsid => {
   const now = new Date();
   let currentMonth = new Date(now.getFullYear(), now.getMonth());
 
   let statisticMonth = toStatisticModel(
-    await cost.getStatistic(sender_psid, currentMonth)
+    await cost.getStatistic(senderPsid, currentMonth)
   );
   responseText = toFormStatisticMessage(statisticMonth, "this month");
   return responseText;
 };
 
-const allTime = async sender_psid => {
+const allTime = async senderPsid => {
   let date = new Date(1970);
   let statisticAllTime = toStatisticModel(
-    await cost.getStatistic(sender_psid, date)
+    await cost.getStatistic(senderPsid, date)
   );
   responseText = toFormStatisticMessage(statisticAllTime, "all time");
   return responseText;
 };
 
 const toFormStatisticMessage = (statistic, periodOfTime) => {
-  if (statistic.total_spends === 0 && statistic.earning === 0) {
+  if (statistic.totalSpends === 0 && statistic.earning === 0) {
     responseText = "First add any expense or income";
   } else {
     responseText = `statistic for ${periodOfTime}:`;
@@ -67,7 +67,7 @@ const toFormStatisticMessage = (statistic, periodOfTime) => {
     });
     responseText +=
       "\nTotal: " +
-      statistic.total_spends
+      statistic.totalSpends
         .toFixed(2)
         .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     if (statistic.earning)
@@ -84,7 +84,7 @@ const toFormStatisticMessage = (statistic, periodOfTime) => {
 const toStatisticModel = costs => {
   let statisticModel = {
     spends: [],
-    total_spends: null,
+    totalSpends: null,
     earning: null
   };
 
@@ -93,7 +93,7 @@ const toStatisticModel = costs => {
       statisticModel.earning = cost.sum;
     } else {
       statisticModel.spends.push({ category: cost._id, sum: cost.sum });
-      statisticModel.total_spends += cost.sum;
+      statisticModel.totalSpends += cost.sum;
     }
   });
   return statisticModel;

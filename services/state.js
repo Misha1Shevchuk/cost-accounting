@@ -1,8 +1,8 @@
 const State = require("../models/state");
 
-const add = async sender_psid => {
+const add = async senderPsid => {
   const state = new State({
-    userId: sender_psid,
+    userId: senderPsid,
     category: null,
     amount: null,
     description: null
@@ -12,21 +12,21 @@ const add = async sender_psid => {
   });
 };
 
-const get = async sender_psid => {
-  const state = await State.find({ userId: sender_psid });
+const get = async senderPsid => {
+  const state = await State.findOne({ userId: senderPsid });
   if (!state) throw new Error("Not found costs!");
-  return state[0];
+  return state;
 };
 
-const update = async (sender_psid, param) => {
-  let state = await State.updateOne({ userId: sender_psid }, param);
+const update = async (senderPsid, param) => {
+  let state = await State.updateOne({ userId: senderPsid }, param);
   if (!state) throw new Error("Not found state!");
   return state[0];
 };
 
-const clear = async sender_psid => {
+const clear = async senderPsid => {
   try {
-    return await State.findOneAndDelete({ userId: sender_psid });
+    return await State.findOneAndDelete({ userId: senderPsid });
   } catch (err) {
     throw err;
   }

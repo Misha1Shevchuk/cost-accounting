@@ -1,16 +1,16 @@
 const Cost = require("../models/costs");
 
 // Add new cost to db
-const addNewCost = (sender_psid, cost_dedails) => {
+const addNewCost = (senderPsid, cost_dedails) => {
   const cost = new Cost({
     amount: cost_dedails.amount,
     description: cost_dedails.description,
     date: new Date(),
     category: cost_dedails.category,
-    userId: sender_psid
+    userId: senderPsid
   });
 
-  cost.save().catch(err => console.log(err));
+  cost.save().catch(err => console.err(err));
 };
 
 const deleteCost = async idCost => await Cost.findByIdAndDelete(idCost);

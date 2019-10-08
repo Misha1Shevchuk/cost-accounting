@@ -2,11 +2,9 @@ const { getHistory, getHistoryWithDate } = require("../services/history");
 const { deleteCost } = require("../services/cost");
 
 const showPageHistory = async (req, res) => {
-  console.log(await getHistory(req.params.sender_psid));
-
   res.render("history", {
     data: {
-      history: await getHistory(req.params.sender_psid),
+      history: await getHistory(req.params.senderPsid),
       date: "0000-00-00"
     }
   });
@@ -24,7 +22,7 @@ const showPageHistoryWithDate = async (req, res) => {
   date.setMilliseconds(0);
   res.render("history", {
     data: {
-      history: await getHistoryWithDate(req.params.sender_psid, date),
+      history: await getHistoryWithDate(req.params.senderPsid, date),
       date: req.params.date
     }
   });

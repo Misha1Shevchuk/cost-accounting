@@ -1,20 +1,18 @@
 const User = require("../models/user");
 
-const addNewUser = (sender_psid, userData) => {
+const addNewUser = (senderPsid, userData) => {
   const user = new User({
-    userId: sender_psid,
+    userId: senderPsid,
     firstName: userData.first_name,
     lastName: userData.last_name
   });
-  console.log("added");
-
   user.save().catch(err => console.log(err));
 };
 
-const getUser = async sender_psid => {
-  let user = await User.find({ userId: sender_psid });
+const getUser = async senderPsid => {
+  let user = await User.findOne({ userId: senderPsid });
   if (!user) throw new Error("Not found costs!");
-  return user[0];
+  return user;
 };
 
 module.exports = { addNewUser, getUser };

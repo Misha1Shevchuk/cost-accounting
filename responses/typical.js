@@ -1,6 +1,7 @@
 SERVER_URL = process.env.SERVER_URL;
+const formMessage = require("../helpers/formMessages");
 
-const getStartedMessage = () => {
+const getStartedMessage = userData => {
   const text = `Hello ${userData.first_name}! I'm MoneyCounterBot. I'll manage your money. How can I help you?`;
   const quickReplies = [
     { title: "Add expense", payload: "<ADD_EXPENSE>" },
@@ -9,7 +10,7 @@ const getStartedMessage = () => {
   return formMessage.formQuickReplies(text, quickReplies);
 };
 
-const showMenu = sender_psid => {
+const showMenu = senderPsid => {
   let response = {
     attachment: {
       type: "template",
@@ -51,7 +52,7 @@ const showMenu = sender_psid => {
                 webview_height_ratio: "tall",
                 webview_share_button: "hide",
                 messenger_extensions: true,
-                url: SERVER_URL + "/webview/" + sender_psid
+                url: `${SERVER_URL}/webview/${senderPsid}`
               }
             ]
           }
@@ -85,9 +86,57 @@ const showStatistic = statistic => {
   return formMessage.formQuickReplies(text, quickReplies);
 };
 
+const createPersistentMenu = {
+  persistent_menu: [
+    {
+      locale: "default",
+      composer_input_disabled: false,
+      call_to_actions: [
+        {
+          type: "postback",
+          title: "New expense",
+          payload: "<ADD_EXPENSE>"
+        },
+        {
+          type: "postback",
+          title: "New income",
+          payload: "<ADD_INCOME>"
+        },
+        {
+          title: "Show statistic",
+          type: "nested",
+          call_to_actions: [
+            {
+              type: "postback",
+              title: "Today",
+              payload: "<STATISTIC_DAY>"
+            },
+            {
+              type: "postback",
+              title: "This week",
+              payload: "<STATISTIC_WEEK>"
+            },
+            {
+              type: "postback",
+              title: "This month",
+              payload: "<STATISTIC_MONTH>"
+            },
+            {
+              type: "postback",
+              title: "All time",
+              payload: "<STATISTIC_ALL_TIME>"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
 module.exports = {
   getStartedMessage,
   showMenu,
   selectPeriodStatistic,
-  showStatistic
+  showStatistic,
+  createPersistentMenu
 };

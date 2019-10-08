@@ -1,10 +1,8 @@
 const handleMessage = require("../handlers/handleMessage");
 const handlePostback = require("../handlers/handlePostback");
 const handleQuickReply = require("../handlers/handleQuickReply");
-const callSendAPI = require("./callSendAPI");
+const { callSendAPI } = require("../helpers/requests");
 const { addSenderAction, addUrlToWhiteList } = require("../helpers/requests");
-const SERVER_URL = process.env.SERVER_URL;
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 module.exports.newMessage = (req, res) => {
   // Parse the request body from the POST
@@ -18,7 +16,7 @@ module.exports.newMessage = (req, res) => {
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      addSenderAction(sender_psid, PAGE_ACCESS_TOKEN);
+      addSenderAction(sender_psid);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
@@ -35,7 +33,7 @@ module.exports.newMessage = (req, res) => {
     // Return a '200 OK' response to all events
     res.status(200).send("EVENT_RECEIVED");
   } else {
-    res.sendStatus(200);
+    res.sendStatus(404);
   }
 };
 
@@ -54,10 +52,10 @@ module.exports.get = (req, res) => {
       // Respond with 200 OK and challenge token from the request
       console.log("WEBHOOK_VERIFIED");
 
-      addUrlToWhiteList(SERVER_URL, PAGE_ACCESS_TOKEN);
+      addUrlToWhiteList();
       res.status(200).send(challenge);
     } else {
-      res.status(200).json({ error: "Webhook isn't verified" });
+      res.status(403).json({ error: "Webhook isn't verified" });
     }
   }
 };
