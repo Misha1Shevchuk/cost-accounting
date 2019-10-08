@@ -11,9 +11,12 @@ const add = async senderPsid => {
 
 const get = async senderPsid => {
   const userObjectId = (await userData.getUser(senderPsid))._id;
-  const state = await State.findOne({ user: userObjectId });
-  if (!state) throw new Error("Not found costs!");
-  return state;
+  try {
+    const state = await State.findOne({ user: userObjectId });
+    return state;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const update = async (senderPsid, param) => {

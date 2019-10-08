@@ -4,12 +4,14 @@ require("dotenv").config();
 PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 SERVER_URL = process.env.SERVER_URL;
 
+// Get user data
 const getUserData = senderPsid => {
   return axios
     .get(
       `https://graph.facebook.com/${senderPsid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`
     )
-    .then(request => request.data);
+    .then(request => request.data)
+    .catch(err => console.error(err));
 };
 
 // Add button "get started"
@@ -28,7 +30,7 @@ const addGetStartedButton = () => {
       `https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
       data
     )
-    .catch(err => err);
+    .catch(err => console.error(err));
 };
 
 // Add button "get started"
@@ -52,12 +54,10 @@ const addPersistentMenu = () => {
       createPersistentMenu
     )
     .then(data => data)
-    .catch(err => {
-      console.error(err);
-    });
+    .catch(err => console.error(err));
 };
 
-// sender action
+// Sender action
 const addSenderAction = senderPsid => {
   const data = {
     recipient: {

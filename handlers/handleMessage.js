@@ -14,6 +14,11 @@ const handleMessage = async (senderPsid, receivedMessage) => {
       state.clear(senderPsid);
       response = showMenu(senderPsid);
 
+      // Show menu
+    } else if (receivedMessage.toLowerCase() === "menu") {
+      state.clear(senderPsid);
+      response = showMenu(senderPsid);
+
       // If user entered amount
     } else if (userState.category && !userState.amount) {
       response = checkTextMessage.enterAmount(senderPsid, receivedMessage);

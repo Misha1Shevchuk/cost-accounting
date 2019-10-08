@@ -22,6 +22,7 @@ const server = app.listen(process.env.PORT || 1337, () =>
   console.log(`webhook is listening port ${server.address().port}`)
 );
 
+/* UNCOMENT NEXT LINES IF YOU WANT TO ADD GETSTARTEDBUTTON OR PERSISTENT MENU */
 // addGetStartedButton();
 // addPersistentMenu();
 
@@ -31,7 +32,7 @@ app.use("/webview", routerWebview);
 
 // Connect DB
 mongoose.connect(
-  process.env.CONNECT_DB,
+  CONNECT_DB,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => console.log("Connected to DB")
 );
