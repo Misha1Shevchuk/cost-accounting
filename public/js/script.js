@@ -14,12 +14,9 @@ function sendIdItem(itemId) {
 
 function searchDate() {
   var userId = window.location.pathname.replace("/webview/", "");
-  var date = document.getElementById("date_selector").value;
-  fetch("/webview/" + userId + "/" + date, {
+  fetch("/webview/" + userId, {
     method: "GET",
     headers: { "Content-Type": "application/json" }
-  }).then(function(response) {
-    window.location.href = response.url;
   });
 }
 

@@ -16,11 +16,11 @@ const handleMessage = async (senderPsid, receivedMessage) => {
 
       // If user entered amount
     } else if (userState.category && !userState.amount) {
-      response = checkTextMessage.enterAmount(receivedMessage);
+      response = checkTextMessage.enterAmount(senderPsid, receivedMessage);
 
       // If user entered description
     } else if (userState.amount && !userState.description) {
-      response = checkTextMessage.enterDescription(receivedMessage);
+      response = checkTextMessage.enterDescription(senderPsid, receivedMessage);
 
       //If user wrote text when he had to select option "save" in quick replies
     } else if (userState.description) {

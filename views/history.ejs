@@ -34,20 +34,21 @@
                         },
                         function error(err) {
                             // error
-                            console.log(err);
+                            console.error(err);
                         }
                     );
                 }
             }, function error(err) {
                 // error retrieving supported features
-                console.log(err);
+                console.error(err);
             });
         };
     </script>
-    <form>
+    <form onsubmit="searchDate()" id="form_search_date">
         <label for="date_selector" id="date_selector_label">Select date:</label>
-        <input type="date" id="date_selector" required value=<%=""+data.date %> >
-        <input type="button" onclick="searchDate()" value="Search"></form>
+        <input type="date" id="date_selector" name="date" required value=<%=""+data.date %> >
+        <input type="submit" id="btn_search" value="Search">
+    </form>
     <ul class="history_list">
         <% for(var i=0; i<data.history.length;i++) {%>
         <li class="history_list_item" id=<%="li_"+data.history[i]._id%>>
@@ -74,13 +75,12 @@
                     <p class="category"><%=data.history[i].category%></p>
 
                 </div>
-                <div></div>
                 <% if(data.history[i].category === "Income") {%>
                 <p class="amount green"><%=data.history[i].amount%></p>
                 <% } else {%>
                 <p class="amount"><%=data.history[i].amount%></p>
                 <% } %>
-                <button class="btn" id=<%="del_"+data.history[i]._id%> onclick="deleteItem(this)">×</button>
+                <button class="btn_remove" id=<%="del_"+data.history[i]._id%> onclick="deleteItem(this)">×</button>
             </div>
             <% if(data.history[i].description !== "skipped") {%>
             <p class="description"><%=data.history[i].description%></p>

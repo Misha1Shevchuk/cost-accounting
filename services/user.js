@@ -6,12 +6,12 @@ const addNewUser = (senderPsid, userData) => {
     firstName: userData.first_name,
     lastName: userData.last_name
   });
-  user.save().catch(err => console.log(err));
+  user.save().catch(err => console.error(err));
 };
 
 const getUser = async senderPsid => {
   let user = await User.findOne({ userId: senderPsid });
-  if (!user) throw new Error("Not found costs!");
+  if (!user) throw new Error("Not found user");
   return user;
 };
 

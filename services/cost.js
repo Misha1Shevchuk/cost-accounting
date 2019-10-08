@@ -1,13 +1,15 @@
 const Cost = require("../models/costs");
+const userData = require("./user");
 
 // Add new cost to db
-const addNewCost = (senderPsid, cost_dedails) => {
+const addNewCost = async (senderPsid, cost_dedails) => {
+  const user = await userData.getUser(senderPsid);
   const cost = new Cost({
     amount: cost_dedails.amount,
     description: cost_dedails.description,
     date: new Date(),
     category: cost_dedails.category,
-    userId: senderPsid
+    user: user
   });
 
   cost.save().catch(err => console.err(err));
@@ -16,11 +18,12 @@ const addNewCost = (senderPsid, cost_dedails) => {
 const deleteCost = async idCost => await Cost.findByIdAndDelete(idCost);
 
 // Get statistic
-const getStatistic = (sender_psid, periodOfTime) => {
+const getStatistic = async (senderPsid, periodOfTime) => {
+  const userId = (await userData.getUser(senderPsid))._id;
   let costs = Cost.aggregate([
     {
       $match: {
-        $and: [{ userId: sender_psid }, { date: { $gte: periodOfTime } }]
+        $and: [{ user: userId }, { date: { $gte: periodOfTime } }]
       }
     },
     { $group: { _id: "$category", sum: { $sum: "$amount" } } }

@@ -2,7 +2,7 @@ const expense = require("../responses/expense");
 const income = require("../responses/income");
 const state = require("../services/state");
 
-const enterAmount = async receivedMessage => {
+const enterAmount = async (senderPsid, receivedMessage) => {
   let response;
   let userState = await state.get(senderPsid);
   if (!isNaN(Number(receivedMessage)) && Number(receivedMessage) > 0) {
@@ -19,7 +19,7 @@ const enterAmount = async receivedMessage => {
   return response;
 };
 
-const enterDescription = async receivedMessage => {
+const enterDescription = async (senderPsid, receivedMessage) => {
   let response;
   let userState = await state.get(senderPsid);
   userState.category !== "Income"

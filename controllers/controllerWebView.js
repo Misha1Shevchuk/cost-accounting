@@ -1,31 +1,29 @@
 const { getHistory, getHistoryWithDate } = require("../services/history");
 const { deleteCost } = require("../services/cost");
 
-const showPageHistory = async (req, res) => {
-  res.render("history", {
-    data: {
-      history: await getHistory(req.params.senderPsid),
+const showPage = async (req, res) => {
+  let senderPsid = req.params.senderPsid;
+  if (req.query.date) {
+    let dateArr = req.query.date.split("-");
+    let date = new Date();
+    date.setFullYear(dateArr[0]);
+    date.setMonth(dateArr[1] - 1);
+    date.setDate(dateArr[2]);
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    data = {
+      history: await getHistoryWithDate(senderPsid, date),
+      date: req.query.date
+    };
+  } else {
+    data = {
+      history: await getHistory(senderPsid),
       date: "0000-00-00"
-    }
-  });
-};
-
-const showPageHistoryWithDate = async (req, res) => {
-  let dateArr = req.params.date.split("-");
-  var date = new Date();
-  date.setFullYear(dateArr[0]);
-  date.setMonth(dateArr[1] - 1);
-  date.setDate(dateArr[2]);
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-  res.render("history", {
-    data: {
-      history: await getHistoryWithDate(req.params.senderPsid, date),
-      date: req.params.date
-    }
-  });
+    };
+  }
+  res.render("history", data);
 };
 
 const deleteRecord = async (req, res) => {
@@ -35,8 +33,8 @@ const deleteRecord = async (req, res) => {
     if (cost) res.sendStatus(200);
     else res.status(500).json({ Error: "File already deleted" });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-module.exports = { showPageHistory, showPageHistoryWithDate, deleteRecord };
+module.exports = { showPage, deleteRecord };

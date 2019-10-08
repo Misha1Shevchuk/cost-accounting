@@ -54,22 +54,26 @@ const allTime = async senderPsid => {
 };
 
 const toFormStatisticMessage = (statistic, periodOfTime) => {
-  if (statistic.totalSpends === 0 && statistic.earning === 0) {
+  if (!statistic.totalSpends && !statistic.earning) {
     responseText = "First add any expense or income";
   } else {
     responseText = `statistic for ${periodOfTime}:`;
-    statistic.spends.forEach(spend => {
+    // Check if statistic contains any spend
+    if (statistic.totalSpends) {
+      statistic.spends.forEach(spend => {
+        responseText +=
+          "\n" +
+          spend.category +
+          ": " +
+          spend.sum.toFixed(2).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+      });
       responseText +=
-        "\n" +
-        spend.category +
-        ": " +
-        spend.sum.toFixed(2).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
-    });
-    responseText +=
-      "\nTotal: " +
-      statistic.totalSpends
-        .toFixed(2)
-        .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+        "\nTotal: " +
+        statistic.totalSpends
+          .toFixed(2)
+          .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+    }
+    // Check if statistic contains income
     if (statistic.earning)
       responseText +=
         "\n\nIncome: " +
@@ -77,7 +81,6 @@ const toFormStatisticMessage = (statistic, periodOfTime) => {
           .toFixed(2)
           .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
   }
-
   return responseText;
 };
 
