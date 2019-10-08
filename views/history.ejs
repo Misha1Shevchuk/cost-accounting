@@ -50,6 +50,7 @@
         <input type="submit" id="btn_search" value="Search">
     </form>
     <ul class="history_list">
+        <% if(data.history.length!==0) {%>
         <% for(var i=0; i<data.history.length;i++) {%>
         <li class="history_list_item" id=<%="li_"+data.history[i]._id%>>
             <div class="item_header">
@@ -76,9 +77,9 @@
 
                 </div>
                 <% if(data.history[i].category === "Income") {%>
-                <p class="amount green"><%=data.history[i].amount%></p>
+                <p class="amount green"><%=data.history[i].amount.toFixed(2)%></p>
                 <% } else {%>
-                <p class="amount"><%=data.history[i].amount%></p>
+                <p class="amount"><%=data.history[i].amount.toFixed(2)%></p>
                 <% } %>
                 <button class="btn_remove" id=<%="del_"+data.history[i]._id%> onclick="deleteItem(this)">×</button>
             </div>
@@ -88,7 +89,10 @@
 
         </li>
         <% }%>
-    </ul>
+        <% } else {%>
+            <li class="history_list_item">Not found records</li>
+            <% }%>
+        </ul>
     <script>
     var amounts = document.querySelectorAll(".amount");
     amounts.forEach(function(amount){
