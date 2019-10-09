@@ -35,11 +35,16 @@ const week = async sender_psid => {
 };
 
 const month = async senderPsid => {
-  const now = new Date();
-  let currentMonth = new Date(now.getFullYear(), now.getMonth());
+  let time = new Date();
+  time.setDate(0);
+  time.setHours(0);
+  time.setMinutes(0);
+  time.setSeconds(0);
+  time.setMilliseconds(0);
+  time.getDay() === 0;
 
   let statisticMonth = toStatisticModel(
-    await cost.getStatistic(senderPsid, currentMonth)
+    await cost.getStatistic(senderPsid, time)
   );
   responseText = toFormStatisticMessage(statisticMonth, "this month");
   return responseText;
@@ -58,7 +63,7 @@ const toFormStatisticMessage = (statistic, periodOfTime) => {
   if (!statistic.totalSpends && !statistic.earning) {
     responseText = "First add any expense or income";
   } else {
-    responseText = `statistic for ${periodOfTime}:`;
+    responseText = `Statistic for ${periodOfTime}:`;
     // Check if statistic contains any spend
     if (statistic.totalSpends) {
       statistic.spends.forEach(spend => {
