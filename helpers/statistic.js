@@ -1,4 +1,5 @@
 const cost = require("../services/cost");
+const INCOME = require("./incomesEnum");
 
 let responseText = "";
 
@@ -76,7 +77,9 @@ const toFormStatisticMessage = (statistic, periodOfTime) => {
     // Check if statistic contains income
     if (statistic.earning)
       responseText +=
-        "\n\nIncome: " +
+        "\n\n" +
+        INCOME +
+        ": " +
         statistic.earning
           .toFixed(2)
           .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
@@ -92,7 +95,7 @@ const toStatisticModel = costs => {
   };
 
   costs.forEach(cost => {
-    if (cost._id === "Income") {
+    if (cost._id === INCOME) {
       statisticModel.earning = cost.sum;
     } else {
       statisticModel.spends.push({ category: cost._id, sum: cost.sum });

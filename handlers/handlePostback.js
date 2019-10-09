@@ -8,6 +8,7 @@ const {
 } = require("../responses/typical");
 const spend = require("../responses/expense");
 const earning = require("../responses/income");
+const INCOME = require("../helpers/incomesEnum");
 const statistic = require("../helpers/statistic");
 
 const handlePostback = async (senderPsid, receivedPostback) => {
@@ -30,7 +31,7 @@ const handlePostback = async (senderPsid, receivedPostback) => {
       response = earning.enterAmount();
       await state.clear(senderPsid);
       await state.add(senderPsid);
-      await state.update(senderPsid, { category: "Income" });
+      await state.update(senderPsid, { category: INCOME });
       break;
 
     case "<SHOW_STATISTIC>":
@@ -51,9 +52,7 @@ const handlePostback = async (senderPsid, receivedPostback) => {
       break;
 
     default:
-      response = {
-        text: `I don't understand postback "${payload}" yet.`
-      };
+      response = { text: `I don't understand postback "${payload}" yet.` };
       break;
   }
   // Send the response message

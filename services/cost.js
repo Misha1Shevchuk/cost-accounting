@@ -20,7 +20,7 @@ const deleteCost = async idCost => await Cost.findByIdAndDelete(idCost);
 // Get statistic
 const getStatistic = async (senderPsid, periodOfTime) => {
   const userId = (await userData.getUser(senderPsid))._id;
-  let costs = Cost.aggregate([
+  const costs = Cost.aggregate([
     {
       $match: {
         $and: [{ user: userId }, { date: { $gte: periodOfTime } }]
@@ -28,7 +28,6 @@ const getStatistic = async (senderPsid, periodOfTime) => {
     },
     { $group: { _id: "$category", sum: { $sum: "$amount" } } }
   ]);
-  if (!costs) throw new Error("Not found costs!");
   return costs;
 };
 

@@ -3,6 +3,7 @@ const { addNewCost } = require("../services/cost");
 const { callSendAPI } = require("../helpers/requests");
 const { showMenu, showStatistic } = require("../responses/typical");
 const category = require("../helpers/categoriesEnum");
+const INCOME = require("../helpers/incomesEnum");
 const expense = require("../responses/expense");
 const income = require("../responses/income");
 const statistic = require("../helpers/statistic");
@@ -22,7 +23,7 @@ const handlePostback = async (senderPsid, receivedQuickReply) => {
         response = income.enterAmount();
         await state.clear(senderPsid);
         await state.add(senderPsid);
-        await state.update(senderPsid, { category: "Income" });
+        await state.update(senderPsid, { category: INCOME });
         break;
 
       // Categories:

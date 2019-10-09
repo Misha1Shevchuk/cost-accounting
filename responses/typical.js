@@ -64,7 +64,7 @@ const showMenu = senderPsid => {
 };
 
 const selectPeriodStatistic = () => {
-  const text = "For which period?";
+  const text = "For which period? 📅";
   const quickReplies = [
     { title: "Today", payload: "<STATISTIC_DAY>" },
     { title: "This week", payload: "<STATISTIC_WEEK>" },

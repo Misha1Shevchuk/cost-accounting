@@ -10,9 +10,9 @@ const addNewUser = (senderPsid, userData) => {
 };
 
 const getUser = async senderPsid => {
-  let user = await User.find({ userId: senderPsid });
+  let user = await User.findOne({ userId: senderPsid });
   if (!user) throw new Error("Not found user");
-  return user[0];
+  return user;
 };
 
 module.exports = { addNewUser, getUser };

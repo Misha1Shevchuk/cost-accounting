@@ -37,11 +37,14 @@
 
 .history_list_item {
   display: block;
+  opacity: 1;
   border-radius: 10px;
   background-color: #fff;
   margin: 4px 0;
   padding: 5px 8px;
   width: 100%;
+  transition: opacity 0.3s linear;
+  overflow: hidden;
 }
 
 .item_header {
@@ -53,6 +56,7 @@
   width: 40%;
   padding-bottom: 3px;
 }
+
 .date {
   font-size: 0.9em;
 }

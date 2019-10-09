@@ -21,5 +21,8 @@ function searchDate() {
 }
 
 function hideDeletedElement(itemId) {
-  document.getElementById("li_" + itemId).style.display = "none";
+  document.getElementById("li_" + itemId).style.opacity = 0;
+  setTimeout(function() {
+    document.getElementById("li_" + itemId).style.display = "none";
+  }, 500);
 }

@@ -76,10 +76,12 @@
                     <p class="category"><%=data.history[i].category%></p>
 
                 </div>
-                <% if(data.history[i].category === "Income") {%>
-                <p class="amount green"><%=data.history[i].amount.toFixed(2)%></p>
-                <% } else {%>
-                <p class="amount"><%=data.history[i].amount.toFixed(2)%></p>
+                <% if(data.history[i].amount) {%>
+                    <% if(data.history[i].category === "💸Income") {%>
+                        <p class="amount green"><%=data.history[i].amount.toFixed(2)%></p>
+                    <% } else {%>
+                        <p class="amount"><%=data.history[i].amount.toFixed(2)%></p>
+                    <% } %>
                 <% } %>
                 <button class="btn_remove" id=<%="del_"+data.history[i]._id%> onclick="deleteItem(this)">×</button>
             </div>

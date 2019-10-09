@@ -4,8 +4,8 @@ const userData = require("./user");
 // Get history costs for current week
 const getHistory = async senderPsid => {
   const userId = (await userData.getUser(senderPsid))._id;
-  let costs = await Cost.find({ user: userId }).sort({ date: -1 });
-  if (!costs) throw new Error("Not found costs!");
+  const costs = await Cost.find({ user: userId }).sort({ date: -1 });
+  if (!costs[0]) throw new Error("Not found costs!");
   return costs;
 };
 
@@ -16,7 +16,7 @@ const getHistoryWithDate = async (senderPsid, dayDate) => {
   let costs = await Cost.find({
     $and: [{ user: userId }, { date: { $gte: dayDate, $lt: nextDay } }]
   }).sort({ date: -1 });
-  if (!costs) throw new Error("Not found costs!");
+  if (!costs) throw new Error("getHistory error");
   return costs;
 };
 

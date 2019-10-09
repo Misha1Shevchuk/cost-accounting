@@ -9,15 +9,14 @@ const handleMessage = async (senderPsid, receivedMessage) => {
 
   // Checks if the message contains text
   if (receivedMessage) {
-    // Started message
-    if (receivedMessage.toLowerCase() === "test") {
+    // Show menu
+    if (receivedMessage.toLowerCase() === "menu") {
       state.clear(senderPsid);
       response = showMenu(senderPsid);
 
-      // Show menu
-    } else if (receivedMessage.toLowerCase() === "menu") {
-      state.clear(senderPsid);
-      response = showMenu(senderPsid);
+      // If user wrote text when he had to select option in menu
+    } else if (!userState) {
+      response = checkTextMessage.textWhenMenuErr(senderPsid);
 
       // If user entered amount
     } else if (userState.category && !userState.amount) {
